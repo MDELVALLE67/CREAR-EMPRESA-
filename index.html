@@ -1,0 +1,2238 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Crear Empresa en Chile 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --azul:    #0A2342;
+    --azul2:   #1B3A6B;
+    --azulV:   #2563EB;
+    --rojo:    #E63946;
+    --oro:     #F4A522;
+    --oroL:    #FCD34D;
+    --verde:   #10B981;
+    --verdeL:  #D1FAE5;
+    --blanco:  #FFFFFF;
+    --fondo:   #F1F5F9;
+    --gris:    #64748B;
+    --grisL:   #E2E8F0;
+    --texto:   #1E293B;
+    --err:     #FEE2E2;
+    --errB:    #EF4444;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+    min-height: 100vh;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--azul);
+    padding: 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 24px rgba(10,35,66,.35);
+  }
+  .header-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .header-flag { font-size: 28px; }
+  .header-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--blanco);
+    letter-spacing: -0.3px;
+    line-height: 1.1;
+  }
+  .header-title span { color: var(--oro); }
+  .header-badge {
+    margin-left: auto;
+    background: rgba(244,165,34,.15);
+    border: 1px solid rgba(244,165,34,.35);
+    color: var(--oroL);
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 12px;
+    border-radius: 20px;
+    letter-spacing: .5px;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-wrap {
+    background: rgba(255,255,255,.06);
+    border-top: 1px solid rgba(255,255,255,.08);
+  }
+  .progress-inner {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 12px 24px;
+    display: flex;
+    align-items: center;
+    gap: 0;
+  }
+  .step-pill {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    position: relative;
+  }
+  .step-pill::after {
+    content: '';
+    flex: 1;
+    height: 2px;
+    background: rgba(255,255,255,.12);
+    margin: 0 6px;
+  }
+  .step-pill:last-child::after { display: none; }
+  .step-pill.done::after { background: var(--verde); }
+  .step-pill.active::after { background: rgba(255,255,255,.12); }
+
+  .step-circle {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    border: 2px solid rgba(255,255,255,.2);
+    color: rgba(255,255,255,.4);
+    flex-shrink: 0;
+    transition: all .3s;
+  }
+  .step-pill.done .step-circle { background: var(--verde); border-color: var(--verde); color: #fff; }
+  .step-pill.active .step-circle { background: var(--oro); border-color: var(--oro); color: var(--azul); }
+  .step-label {
+    font-size: 10.5px;
+    color: rgba(255,255,255,.35);
+    font-weight: 500;
+    white-space: nowrap;
+    display: none;
+  }
+  @media(min-width:600px) { .step-label { display: block; } }
+  .step-pill.active .step-label { color: var(--oroL); }
+  .step-pill.done .step-label { color: var(--verde); }
+
+  /* ── MAIN ── */
+  .main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 20px 60px;
+  }
+
+  /* ── CARD ── */
+  .card {
+    background: var(--blanco);
+    border-radius: 20px;
+    box-shadow: 0 4px 32px rgba(10,35,66,.10);
+    overflow: hidden;
+    display: none;
+  }
+  .card.active { display: block; }
+
+  .card-header {
+    background: linear-gradient(135deg, var(--azul) 0%, var(--azul2) 100%);
+    padding: 28px 36px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card-header::before {
+    content: '';
+    position: absolute;
+    right: -30px; top: -30px;
+    width: 160px; height: 160px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.04);
+  }
+  .card-step-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--oro);
+    font-weight: 500;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .card-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.15;
+  }
+  .card-sub {
+    font-size: 14px;
+    color: rgba(255,255,255,.55);
+    margin-top: 6px;
+  }
+
+  .card-body { padding: 32px 36px; }
+  @media(max-width:600px) {
+    .card-header { padding: 22px 20px 18px; }
+    .card-body { padding: 24px 20px; }
+    .card-title { font-size: 21px; }
+  }
+
+  /* ── TIPO EMPRESA SELECTOR ── */
+  .tipo-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px,1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+  .tipo-card {
+    border: 2px solid var(--grisL);
+    border-radius: 14px;
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all .2s;
+    position: relative;
+    background: var(--fondo);
+  }
+  .tipo-card:hover { border-color: var(--azulV); background: #EFF6FF; transform: translateY(-2px); }
+  .tipo-card.selected {
+    border-color: var(--azulV);
+    background: #EFF6FF;
+    box-shadow: 0 0 0 3px rgba(37,99,235,.15);
+  }
+  .tipo-card .check {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    border: 2px solid var(--grisL);
+    background: var(--blanco);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 11px;
+    transition: all .2s;
+  }
+  .tipo-card.selected .check { background: var(--azulV); border-color: var(--azulV); color: #fff; }
+  .tipo-card .ico { font-size: 28px; margin-bottom: 10px; }
+  .tipo-card .nombre {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--azul);
+    margin-bottom: 4px;
+  }
+  .tipo-card .sigla {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    background: var(--azul);
+    color: var(--oro);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  .tipo-card .desc {
+    font-size: 12px;
+    color: var(--gris);
+    line-height: 1.5;
+  }
+  .tipo-card .tag {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 10.5px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+  .tag-green { background: var(--verdeL); color: var(--verde); }
+  .tag-gold { background: #FEF3C7; color: #92400E; }
+  .tag-blue { background: #DBEAFE; color: #1D4ED8; }
+  .tag-red { background: #FEE2E2; color: #991B1B; }
+
+  /* ── FORM FIELDS ── */
+  .field-group { margin-bottom: 22px; }
+  .field-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--texto);
+    margin-bottom: 7px;
+    letter-spacing: .1px;
+  }
+  .field-group label .req { color: var(--rojo); margin-left: 2px; }
+  .field-group label .tip {
+    font-weight: 400;
+    color: var(--gris);
+    font-size: 11.5px;
+    margin-left: 6px;
+  }
+  .field-group input,
+  .field-group select,
+  .field-group textarea {
+    width: 100%;
+    padding: 13px 16px;
+    border: 2px solid var(--grisL);
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    color: var(--texto);
+    background: var(--blanco);
+    transition: border-color .2s, box-shadow .2s;
+    outline: none;
+    -webkit-appearance: none;
+  }
+  .field-group input:focus,
+  .field-group select:focus,
+  .field-group textarea:focus {
+    border-color: var(--azulV);
+    box-shadow: 0 0 0 3px rgba(37,99,235,.12);
+  }
+  .field-group input.error,
+  .field-group select.error,
+  .field-group textarea.error {
+    border-color: var(--errB);
+    background: var(--err);
+  }
+  .field-group textarea { resize: vertical; min-height: 90px; }
+  .field-group select { cursor: pointer; }
+  .field-hint {
+    font-size: 11.5px;
+    color: var(--gris);
+    margin-top: 5px;
+    line-height: 1.45;
+  }
+  .field-error {
+    font-size: 12px;
+    color: var(--errB);
+    margin-top: 5px;
+    display: none;
+    font-weight: 500;
+  }
+  .field-error.show { display: block; }
+
+  .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:560px) { .cols-2 { grid-template-columns: 1fr; } }
+
+  /* ── COUNTER ── */
+  .char-counter {
+    font-size: 11px;
+    color: var(--gris);
+    text-align: right;
+    margin-top: 4px;
+  }
+
+  /* ── INFO BOX ── */
+  .info-box {
+    background: #EFF6FF;
+    border-left: 4px solid var(--azulV);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #1D4ED8;
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+  .warn-box {
+    background: #FFFBEB;
+    border-left: 4px solid var(--oro);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #92400E;
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+  .ok-box {
+    background: var(--verdeL);
+    border-left: 4px solid var(--verde);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 16px;
+    font-size: 13px;
+    color: #065F46;
+    margin-bottom: 22px;
+    line-height: 1.6;
+  }
+
+  /* ── GIRO TAGS ── */
+  .giro-sugg {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 10px;
+  }
+  .giro-tag {
+    font-size: 12px;
+    padding: 5px 12px;
+    border-radius: 20px;
+    border: 1.5px solid var(--grisL);
+    cursor: pointer;
+    transition: all .15s;
+    background: var(--fondo);
+    color: var(--gris);
+    user-select: none;
+  }
+  .giro-tag:hover { border-color: var(--azulV); color: var(--azulV); background: #EFF6FF; }
+  .giro-tag.sel { border-color: var(--azulV); background: var(--azulV); color: #fff; }
+
+  /* ── SOCIOS ── */
+  .socio-row {
+    border: 1.5px solid var(--grisL);
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+    position: relative;
+    background: var(--fondo);
+  }
+  .socio-row .socio-title {
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--azul);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-remove-socio {
+    margin-left: auto;
+    background: var(--err);
+    color: var(--errB);
+    border: none;
+    border-radius: 6px;
+    padding: 3px 10px;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  .btn-add-socio {
+    width: 100%;
+    border: 2px dashed var(--grisL);
+    background: var(--fondo);
+    border-radius: 12px;
+    padding: 14px;
+    font-size: 14px;
+    color: var(--gris);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 600;
+    transition: all .2s;
+    margin-top: 4px;
+  }
+  .btn-add-socio:hover { border-color: var(--azulV); color: var(--azulV); background: #EFF6FF; }
+
+  /* ── BUTTONS ── */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid var(--grisL);
+  }
+  .btn {
+    padding: 13px 28px;
+    border-radius: 10px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    transition: all .2s;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .btn-back {
+    background: var(--fondo);
+    color: var(--gris);
+    border: 2px solid var(--grisL);
+  }
+  .btn-back:hover { background: var(--grisL); }
+  .btn-next {
+    background: var(--azulV);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(37,99,235,.3);
+  }
+  .btn-next:hover { background: #1D4ED8; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(37,99,235,.4); }
+  .btn-submit {
+    background: var(--verde);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(16,185,129,.3);
+  }
+  .btn-submit:hover { background: #059669; transform: translateY(-1px); }
+
+  /* ── RESUMEN ── */
+  .resumen-section {
+    margin-bottom: 24px;
+  }
+  .resumen-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--gris);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--grisL);
+  }
+  .resumen-row {
+    display: flex;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--fondo);
+    gap: 12px;
+  }
+  .resumen-row:last-child { border-bottom: none; }
+  .resumen-key {
+    font-size: 13px;
+    color: var(--gris);
+    min-width: 160px;
+    flex-shrink: 0;
+  }
+  .resumen-val {
+    font-size: 13.5px;
+    color: var(--texto);
+    font-weight: 500;
+    flex: 1;
+  }
+  .resumen-val .badge {
+    display: inline-block;
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    background: var(--azul);
+    color: var(--oro);
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin-right: 6px;
+  }
+
+  /* ── SUCCESS ── */
+  .success-screen {
+    display: none;
+    text-align: center;
+    padding: 60px 30px;
+  }
+  .success-screen.show { display: block; }
+  .success-icon {
+    width: 90px; height: 90px;
+    background: var(--verdeL);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 42px;
+    margin: 0 auto 24px;
+  }
+  .success-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    color: var(--azul);
+    margin-bottom: 12px;
+  }
+  .success-sub {
+    font-size: 15px;
+    color: var(--gris);
+    max-width: 480px;
+    margin: 0 auto 32px;
+    line-height: 1.7;
+  }
+  .next-steps {
+    background: var(--fondo);
+    border-radius: 16px;
+    padding: 28px 32px;
+    text-align: left;
+    max-width: 540px;
+    margin: 0 auto 28px;
+  }
+  .next-steps h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--azul);
+    margin-bottom: 16px;
+  }
+  .next-step-item {
+    display: flex;
+    gap: 14px;
+    margin-bottom: 14px;
+    align-items: flex-start;
+  }
+  .next-step-item:last-child { margin-bottom: 0; }
+  .ns-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--azulV);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .ns-text { font-size: 13.5px; color: var(--texto); line-height: 1.55; }
+  .ns-text strong { color: var(--azul); }
+  .ns-link { color: var(--azulV); font-weight: 600; }
+
+  .btn-new {
+    background: var(--azul);
+    color: #fff;
+    padding: 14px 32px;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+  }
+  .btn-new:hover { background: var(--azul2); transform: translateY(-1px); }
+  .btn-print {
+    background: var(--fondo);
+    color: var(--gris);
+    border: 2px solid var(--grisL);
+    padding: 14px 24px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+  }
+  .btn-print:hover { background: var(--grisL); }
+
+  /* ── RANGE SLIDER ── */
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 6px;
+    background: var(--grisL);
+    border-radius: 4px;
+    outline: none;
+    padding: 0;
+    border: none;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--azulV);
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(37,99,235,.35);
+    border: 3px solid #fff;
+  }
+  .range-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--gris);
+    margin-top: 6px;
+  }
+  .capital-display {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--azulV);
+    margin: 10px 0;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center;
+    padding: 24px;
+    font-size: 12px;
+    color: var(--gris);
+    border-top: 1px solid var(--grisL);
+    margin-top: 16px;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    .header, .progress-wrap, .btn-row, .tipo-grid { display: none; }
+    .card { box-shadow: none; }
+    .card-header { background: var(--azul) !important; -webkit-print-color-adjust: exact; }
+  }
+
+  /* ── LOGIN ── */
+  .login-overlay {
+    position: fixed; inset: 0;
+    background: var(--azul);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+  }
+  .login-box {
+    background: rgba(255,255,255,.04);
+    border: 1px solid rgba(255,255,255,.1);
+    border-radius: 24px;
+    padding: 48px 44px;
+    width: 100%;
+    max-width: 420px;
+    text-align: center;
+    backdrop-filter: blur(12px);
+    animation: fadeUp .4s ease;
+  }
+  .login-flag { font-size: 44px; margin-bottom: 16px; }
+  .login-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px;
+    font-weight: 800;
+    color: #fff;
+    margin-bottom: 6px;
+  }
+  .login-title span { color: var(--oro); }
+  .login-sub { font-size: 13px; color: rgba(255,255,255,.45); margin-bottom: 32px; }
+  .login-input-wrap { position: relative; margin-bottom: 14px; }
+  .login-input {
+    width: 100%;
+    padding: 15px 50px 15px 18px;
+    background: rgba(255,255,255,.08);
+    border: 1.5px solid rgba(255,255,255,.15);
+    border-radius: 12px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    color: #fff;
+    outline: none;
+    letter-spacing: 2px;
+    text-align: center;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .login-input::placeholder { letter-spacing: 0; color: rgba(255,255,255,.25); }
+  .login-input:focus { border-color: var(--oro); box-shadow: 0 0 0 3px rgba(244,165,34,.15); }
+  .login-input.error { border-color: var(--rojo); box-shadow: 0 0 0 3px rgba(230,57,70,.2); animation: shake .3s ease; }
+  .login-eye {
+    position: absolute;
+    right: 14px; top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none;
+    color: rgba(255,255,255,.4);
+    cursor: pointer; font-size: 18px;
+    padding: 4px;
+    transition: color .2s;
+  }
+  .login-eye:hover { color: rgba(255,255,255,.8); }
+  .login-error {
+    font-size: 12px;
+    color: #FCA5A5;
+    margin-bottom: 14px;
+    min-height: 18px;
+    font-weight: 500;
+  }
+  .login-btn {
+    width: 100%;
+    padding: 15px;
+    background: var(--oro);
+    color: var(--azul);
+    border: none;
+    border-radius: 12px;
+    font-family: 'Syne', sans-serif;
+    font-size: 15px;
+    font-weight: 800;
+    cursor: pointer;
+    transition: all .2s;
+    letter-spacing: .3px;
+  }
+  .login-btn:hover { background: var(--oroL); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(244,165,34,.35); }
+  .login-footer { margin-top: 28px; font-size: 11px; color: rgba(255,255,255,.2); }
+
+  /* CAMBIAR CLAVE MODAL */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,.6);
+    z-index: 8000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.show { display: flex; }
+  .modal-box {
+    background: var(--blanco);
+    border-radius: 20px;
+    padding: 36px 36px 28px;
+    width: 100%;
+    max-width: 400px;
+    box-shadow: 0 20px 60px rgba(0,0,0,.25);
+    animation: fadeUp .3s ease;
+  }
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 800;
+    color: var(--azul);
+    margin-bottom: 6px;
+  }
+  .modal-sub { font-size: 13px; color: var(--gris); margin-bottom: 24px; }
+  .modal-ok { font-size: 13px; color: var(--verde); font-weight: 600; margin-top: 8px; min-height: 20px; }
+
+  /* botón cambiar clave en header */
+  .header-clave-btn {
+    margin-left: auto;
+    background: rgba(255,255,255,.08);
+    border: 1px solid rgba(255,255,255,.15);
+    color: rgba(255,255,255,.6);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 5px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all .2s;
+  }
+  .header-clave-btn:hover { background: rgba(255,255,255,.15); color: #fff; }
+
+  @keyframes shake {
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px); }
+    40%{ transform:translateX(8px); }
+    60%{ transform:translateX(-5px); }
+    80%{ transform:translateX(5px); }
+  }
+
+  /* Ocultar app hasta login */
+  .app-wrap { display: none; }
+  .app-wrap.visible { display: block; }
+</style>
+
+</head>
+<body>
+
+<!-- ══ LOGIN ══════════════════════════════════════════════ -->
+<div class="login-overlay" id="loginOverlay" style="display:flex">
+  <div class="login-box">
+    <div class="login-flag">&#127464;&#127473;</div>
+    <div class="login-title">Crear Empresa en <span>Chile</span></div>
+    <div class="login-sub">Selecciona tu perfil e ingresa la clave</div>
+
+    <div style="display:flex;gap:10px;margin-bottom:22px">
+      <div id="rolUsuario"
+        style="flex:1;padding:14px 10px;border-radius:12px;border:2px solid var(--oro);cursor:pointer;text-align:center;background:rgba(244,165,34,.15);transition:all .2s"
+        onclick="selectRol('usuario')">
+        <div style="font-size:26px;margin-bottom:4px">&#128100;</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">Usuario</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">Llena el formulario</div>
+      </div>
+      <div id="rolAdmin"
+        style="flex:1;padding:14px 10px;border-radius:12px;border:2px solid rgba(255,255,255,.15);cursor:pointer;text-align:center;background:rgba(255,255,255,.06);transition:all .2s"
+        onclick="selectRol('admin')">
+        <div style="font-size:26px;margin-bottom:4px">&#128081;</div>
+        <div style="font-size:13px;font-weight:700;color:#fff">Administrador</div>
+        <div style="font-size:10px;color:rgba(255,255,255,.4);margin-top:2px">Gestiona el sistema</div>
+      </div>
+    </div>
+
+    <div class="login-input-wrap">
+      <input class="login-input" type="password" id="loginInput"
+        placeholder="Ingresa tu clave"
+        onkeydown="if(event.key==='Enter') doLogin()"
+        oninput="this.classList.remove('error'); document.getElementById('loginErrorMsg').textContent=''">
+      <button class="login-eye" id="loginEyeBtn" onclick="toggleLoginEye()">&#128065;</button>
+    </div>
+    <div class="login-error" id="loginErrorMsg"></div>
+    <button class="login-btn" onclick="doLogin()">Ingresar &#8594;</button>
+    <div class="login-footer">&#127464;&#127473; Formulario de Constitucion de Empresas &middot; Chile 2026</div>
+  </div>
+</div>
+
+<!-- ══ PANEL ADMIN ════════════════════════════════════════ -->
+<div id="panelAdmin" style="display:none;position:fixed;inset:0;background:var(--azul);z-index:9000;overflow-y:auto;">
+
+  <div style="background:rgba(0,0,0,.3);padding:18px 32px;display:flex;align-items:center;gap:14px;border-bottom:1px solid rgba(255,255,255,.1);position:sticky;top:0;z-index:10">
+    <div style="font-size:22px">&#128081;</div>
+    <div>
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff">Panel Administrador</div>
+      <div style="font-size:11px;color:rgba(255,255,255,.4)">Crear Empresa en Chile 2026</div>
+    </div>
+    <button onclick="cerrarAdmin()"
+      style="margin-left:auto;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.6);padding:8px 18px;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer">
+      &#128274; Cerrar sesion
+    </button>
+  </div>
+
+  <div style="max-width:560px;margin:0 auto;padding:36px 20px">
+
+    <!-- Claves actuales -->
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;margin-bottom:18px">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:4px">&#128273; Claves actuales</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px">Las claves que usan los participantes</div>
+
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px;margin-bottom:12px;display:flex;align-items:center;gap:14px">
+        <div style="font-size:26px">&#128100;</div>
+        <div style="flex:1">
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Usuario</div>
+          <div id="displayClaveUsuario" style="font-family:'DM Mono',monospace;font-size:20px;color:var(--oro);letter-spacing:2px">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</div>
+        </div>
+        <button id="btnVerUsuario" onclick="toggleVer('usuario')"
+          style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">
+          &#128065; Ver
+        </button>
+      </div>
+
+      <div style="background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:16px 20px;display:flex;align-items:center;gap:14px">
+        <div style="font-size:26px">&#128081;</div>
+        <div style="flex:1">
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:4px;text-transform:uppercase;letter-spacing:.5px">Administrador</div>
+          <div id="displayClaveAdmin" style="font-family:'DM Mono',monospace;font-size:20px;color:var(--oro);letter-spacing:2px">&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;</div>
+        </div>
+        <button id="btnVerAdmin" onclick="toggleVer('admin')"
+          style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);color:rgba(255,255,255,.5);padding:6px 14px;border-radius:8px;font-size:12px;cursor:pointer;font-family:'DM Sans',sans-serif;white-space:nowrap">
+          &#128065; Ver
+        </button>
+      </div>
+    </div>
+
+    <!-- Cambiar clave -->
+    <div style="background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:28px;margin-bottom:18px">
+      <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#fff;margin-bottom:4px">&#9999;&#65039; Cambiar Clave</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.4);margin-bottom:20px">Selecciona cual clave cambiar</div>
+
+      <div style="display:flex;gap:10px;margin-bottom:20px">
+        <div id="tabU" onclick="selectTab('usuario')"
+          style="flex:1;padding:12px;border-radius:10px;border:2px solid var(--azulV);background:rgba(37,99,235,.2);cursor:pointer;text-align:center;transition:all .2s">
+          <div style="font-size:20px">&#128100;</div>
+          <div style="font-size:12px;font-weight:700;color:#fff;margin-top:4px">Clave Usuario</div>
+        </div>
+        <div id="tabA" onclick="selectTab('admin')"
+          style="flex:1;padding:12px;border-radius:10px;border:2px solid rgba(255,255,255,.15);background:rgba(255,255,255,.04);cursor:pointer;text-align:center;transition:all .2s">
+          <div style="font-size:20px">&#128081;</div>
+          <div style="font-size:12px;font-weight:700;color:rgba(255,255,255,.5);margin-top:4px">Clave Admin</div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:14px">
+        <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px">Nueva clave</div>
+        <input type="password" id="inputNueva" placeholder="Minimo 6 caracteres"
+          style="width:100%;padding:13px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:#fff;outline:none"
+          oninput="document.getElementById('errNueva').textContent=''">
+        <div id="errNueva" style="font-size:12px;color:#FCA5A5;min-height:16px;margin-top:5px"></div>
+      </div>
+
+      <div style="margin-bottom:18px">
+        <div style="font-size:11px;font-weight:600;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.6px;margin-bottom:7px">Confirmar nueva clave</div>
+        <input type="password" id="inputConfirm" placeholder="Repite la clave"
+          style="width:100%;padding:13px 16px;background:rgba(255,255,255,.07);border:1.5px solid rgba(255,255,255,.14);border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:#fff;outline:none"
+          oninput="document.getElementById('errConfirm').textContent=''">
+        <div id="errConfirm" style="font-size:12px;color:#FCA5A5;min-height:16px;margin-top:5px"></div>
+      </div>
+
+      <div id="okMsg" style="font-size:13px;color:#6EE7B7;font-weight:600;min-height:20px;margin-bottom:12px;text-align:center"></div>
+      <button onclick="guardarClave()"
+        style="width:100%;padding:14px;background:var(--oro);color:var(--azul);border:none;border-radius:10px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:pointer">
+        Guardar Nueva Clave
+      </button>
+    </div>
+
+    <!-- Info -->
+    <div style="background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:20px 24px">
+      <div style="font-size:13px;font-weight:700;color:rgba(255,255,255,.6);margin-bottom:10px">Como funciona</div>
+      <div style="font-size:12px;color:rgba(255,255,255,.35);line-height:1.85">
+        Usuario: llena el formulario y genera el PDF<br>
+        Administrador: solo tu tienes esta clave<br>
+        Cambia la clave de usuario para cada cliente<br>
+        Mandale el link y la clave por WhatsApp o email
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ══ APP ════════════════════════════════════════════════ -->
+<div class="app-wrap" id="appWrap">
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-inner">
+    <div class="header-flag">🇨🇱</div>
+    <div class="header-title">Crear Empresa en Chile <span>2026</span></div>
+    <div class="header-badge">Formulario Oficial</div>
+  </div>
+  <div class="progress-wrap">
+    <div class="progress-inner" id="progressBar"></div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- ══ PASO 1: TIPO DE EMPRESA ══ -->
+  <div class="card active" id="step1">
+    <div class="card-header">
+      <div class="card-step-num">Paso 01 de 06</div>
+      <div class="card-title">¿Qué tipo de empresa vas a crear?</div>
+      <div class="card-sub">Elige la que mejor se adapta a tu situación</div>
+    </div>
+    <div class="card-body">
+      <div class="info-box">
+        💡 <strong>¿No sabes cuál elegir?</strong> Para la mayoría de emprendedores la <strong>SpA</strong> es la mejor opción: se crea gratis en un día, sin notario, y es la más flexible.
+      </div>
+
+      <div class="tipo-grid" id="tipoGrid">
+        <div class="tipo-card" onclick="selectTipo(this,'SpA')" data-tipo="SpA">
+          <div class="check">✓</div>
+          <div class="ico">🚀</div>
+          <div class="nombre">Soc. por Acciones</div>
+          <div class="sigla">SpA</div>
+          <div class="desc">1 o más socios. La más flexible y moderna. Ideal para emprendedores y startups.</div>
+          <div class="tag tag-green">★ Más recomendada</div>
+        </div>
+        <div class="tipo-card" onclick="selectTipo(this,'EIRL')" data-tipo="EIRL">
+          <div class="check">✓</div>
+          <div class="ico">👤</div>
+          <div class="nombre">Empresa Individual</div>
+          <div class="sigla">EIRL</div>
+          <div class="desc">Solo una persona natural. Tu patrimonio personal queda protegido.</div>
+          <div class="tag tag-blue">Vas solo</div>
+        </div>
+        <div class="tipo-card" onclick="selectTipo(this,'Ltda')" data-tipo="Ltda">
+          <div class="check">✓</div>
+          <div class="ico">🤝</div>
+          <div class="nombre">Soc. Limitada</div>
+          <div class="sigla">Ltda.</div>
+          <div class="desc">2 a 50 socios. La figura clásica y conocida. Requiere notario.</div>
+          <div class="tag tag-gold">Con socios</div>
+        </div>
+        <div class="tipo-card" onclick="selectTipo(this,'SA')" data-tipo="SA">
+          <div class="check">✓</div>
+          <div class="ico">🏛️</div>
+          <div class="nombre">Soc. Anónima</div>
+          <div class="sigla">S.A.</div>
+          <div class="desc">2+ accionistas. Requiere directorio formal. Para empresas medianas/grandes.</div>
+          <div class="tag tag-red">Empresa mayor</div>
+        </div>
+      </div>
+      <div class="field-error show" id="errorTipo" style="display:none;font-size:13px">⚠ Por favor selecciona un tipo de empresa para continuar.</div>
+
+      <div id="tipoInfo" style="display:none"></div>
+
+      <div class="btn-row">
+        <button class="btn btn-next" onclick="goStep(2)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PASO 2: DATOS DE LA EMPRESA ══ -->
+  <div class="card" id="step2">
+    <div class="card-header">
+      <div class="card-step-num">Paso 02 de 06</div>
+      <div class="card-title">Datos de la empresa</div>
+      <div class="card-sub">Nombre legal, fantasía y giro comercial</div>
+    </div>
+    <div class="card-body">
+
+      <div class="warn-box">
+        ⚠️ <strong>El nombre legal</strong> debe ser único en Chile. Puedes verificarlo en <strong>empresaenundia.cl</strong> antes de inscribir. No puede coincidir con otra empresa existente.
+      </div>
+
+      <div class="field-group">
+        <label>Nombre o Razón Social <span class="req">*</span> <span class="tip">Sin el sufijo legal</span></label>
+        <input type="text" id="razonSocial" placeholder="Ej: Innovaciones del Sur" maxlength="60" oninput="counter('razonSocial','c1',60); autoSufijo()">
+        <div class="char-counter" id="c1">0 / 60</div>
+        <div class="field-error" id="errRazon">⚠ Este campo es obligatorio.</div>
+        <div class="field-hint">Se agregará automáticamente el sufijo legal según el tipo de empresa elegido.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Nombre Legal Completo</label>
+        <input type="text" id="nombreCompleto" readonly style="background:#f8fafc;color:var(--azulV);font-weight:600;">
+        <div class="field-hint">Así quedará inscrita ante el Registro de Comercio y el SII.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Nombre de Fantasía <span class="tip">— opcional, cómo te conocerá el público</span></label>
+        <input type="text" id="nombreFantasia" placeholder="Ej: InnoSur, TechChile, La Tienda..." maxlength="40" oninput="counter('nombreFantasia','c2',40)">
+        <div class="char-counter" id="c2">0 / 40</div>
+        <div class="field-hint">El nombre con el que aparecerás en tus boletas, sitio web y publicidad. No tiene restricciones de unicidad.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Giro Principal (Actividad) <span class="req">*</span></label>
+        <input type="text" id="giro" placeholder="Ej: Venta de ropa, Consultoría tecnológica, Restaurante..." maxlength="80" oninput="counter('giro','c3',80)">
+        <div class="char-counter" id="c3">0 / 80</div>
+        <div class="field-error" id="errGiro">⚠ Debes indicar el giro de tu empresa.</div>
+        <div class="field-hint">Describe qué hará tu empresa. El SII te pedirá el código CAE (Código de Actividad Económica) equivalente.</div>
+        <div class="giro-sugg" id="giroSugg">
+          <span class="giro-tag" onclick="setGiro(this,'Venta al por menor de productos varios')">🛍 Retail / Tienda</span>
+          <span class="giro-tag" onclick="setGiro(this,'Consultoría empresarial y tecnológica')">💼 Consultoría</span>
+          <span class="giro-tag" onclick="setGiro(this,'Desarrollo de software y tecnología')">💻 Software / TI</span>
+          <span class="giro-tag" onclick="setGiro(this,'Restaurante y servicios de alimentación')">🍽 Restaurante</span>
+          <span class="giro-tag" onclick="setGiro(this,'Construcción y obras civiles')">🏗 Construcción</span>
+          <span class="giro-tag" onclick="setGiro(this,'Servicios profesionales independientes')">📋 Servicios Prof.</span>
+          <span class="giro-tag" onclick="setGiro(this,'Transporte de carga y pasajeros')">🚛 Transporte</span>
+          <span class="giro-tag" onclick="setGiro(this,'Importación y exportación de productos')">🌍 Import/Export</span>
+          <span class="giro-tag" onclick="setGiro(this,'Agricultura y ganadería')">🌾 Agricultura</span>
+          <span class="giro-tag" onclick="setGiro(this,'Servicios de salud y bienestar')">🏥 Salud</span>
+          <span class="giro-tag" onclick="setGiro(this,'Educación y capacitación')">📚 Educación</span>
+          <span class="giro-tag" onclick="setGiro(this,'Marketing, publicidad y diseño')">🎨 Marketing</span>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Giro Secundario <span class="tip">— opcional</span></label>
+        <input type="text" id="giro2" placeholder="Actividad adicional si corresponde..." maxlength="80">
+        <div class="field-hint">Puedes tener varios giros. Agrega aquí otra actividad que también realizará la empresa.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Objeto Social <span class="req">*</span></label>
+        <textarea id="objeto" placeholder="Describe en términos generales todas las actividades que realizará la empresa. Ej: La sociedad tendrá por objeto la consultoría, asesoría y prestación de servicios profesionales en el área de tecnología, marketing digital y negocios en general, además de la comercialización de productos y servicios relacionados..." maxlength="500" oninput="counter('objeto','c4',500)"></textarea>
+        <div class="char-counter" id="c4">0 / 500</div>
+        <div class="field-error" id="errObjeto">⚠ El objeto social es obligatorio.</div>
+        <div class="field-hint">El objeto social va en los estatutos. Redáctalo amplio para no limitar actividades futuras.</div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(1)">← Volver</button>
+        <button class="btn btn-next" onclick="goStep(3)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PASO 3: SOCIOS Y CAPITAL ══ -->
+  <div class="card" id="step3">
+    <div class="card-header">
+      <div class="card-step-num">Paso 03 de 06</div>
+      <div class="card-title">Socios y Capital Social</div>
+      <div class="card-sub">¿Quiénes forman la empresa y cuánto aporta cada uno?</div>
+    </div>
+    <div class="card-body">
+
+      <div class="ok-box">
+        ✅ <strong>El capital social no tiene mínimo</strong> para SpA, EIRL y Ltda. Puedes poner $1 si quieres. Lo importante es que el capital refleje el aporte real que harán los socios.
+      </div>
+
+      <div id="sociosList"></div>
+      <button class="btn-add-socio" onclick="addSocio()" id="btnAddSocio">+ Agregar socio / representante</button>
+
+      <div style="margin-top:28px">
+        <div class="field-group">
+          <label>Capital Social Total <span class="req">*</span></label>
+          <div class="capital-display" id="capitalDisplay">$ 1.000.000</div>
+          <input type="range" id="capitalSlider" min="0" max="19" value="3" oninput="updateCapital()">
+          <div class="range-labels">
+            <span>$100.000</span><span>$500K</span><span>$1M</span><span>$5M</span><span>$50M+</span>
+          </div>
+          <div style="margin-top:12px">
+            <label style="font-size:12px;color:var(--gris);font-weight:500">O ingresa el monto exacto:</label>
+            <input type="text" id="capitalExacto" placeholder="Ej: 2500000" style="margin-top:6px" oninput="updateCapitalExacto()">
+          </div>
+          <div class="field-hint">Se ingresará en los estatutos y en el formulario del SII. En pesos chilenos (CLP).</div>
+        </div>
+
+        <div class="field-group">
+          <label>Moneda del Capital</label>
+          <select id="monedaCapital">
+            <option value="CLP">Pesos Chilenos (CLP) — más común</option>
+            <option value="UF">UF (Unidades de Fomento)</option>
+            <option value="USD">Dólares (USD)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(2)">← Volver</button>
+        <button class="btn btn-next" onclick="goStep(4)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PASO 4: DOMICILIO ══ -->
+  <div class="card" id="step4">
+    <div class="card-header">
+      <div class="card-step-num">Paso 04 de 06</div>
+      <div class="card-title">Domicilio Comercial</div>
+      <div class="card-sub">La dirección legal de tu empresa ante el SII</div>
+    </div>
+    <div class="card-body">
+
+      <div class="info-box">
+        💡 Puedes usar tu casa como domicilio. El SII acepta domicilios residenciales. Solo necesitas tener una boleta de servicios básicos que acredite la dirección.
+      </div>
+
+      <div class="field-group">
+        <label>Tipo de Domicilio <span class="req">*</span></label>
+        <select id="tipoDomicilio" onchange="updateDomicilioTips()">
+          <option value="">— Selecciona —</option>
+          <option value="casa">Mi casa / departamento</option>
+          <option value="oficina">Oficina arrendada</option>
+          <option value="cowork">Coworking / Domicilio virtual</option>
+          <option value="local">Local comercial o bodega</option>
+          <option value="otro">Otro</option>
+        </select>
+        <div class="field-error" id="errDomicilio">⚠ Selecciona el tipo de domicilio.</div>
+        <div id="domicilioTip" style="margin-top:10px"></div>
+      </div>
+
+      <div class="cols-2">
+        <div class="field-group">
+          <label>Región <span class="req">*</span></label>
+          <select id="region" onchange="updateComunas()">
+            <option value="">— Selecciona —</option>
+            <option value="Región de Arica y Parinacota">Arica y Parinacota</option>
+            <option value="Región de Tarapacá">Tarapacá</option>
+            <option value="Región de Antofagasta">Antofagasta</option>
+            <option value="Región de Atacama">Atacama</option>
+            <option value="Región de Coquimbo">Coquimbo</option>
+            <option value="Región de Valparaíso">Valparaíso</option>
+            <option value="Región Metropolitana">Metropolitana (Santiago)</option>
+            <option value="Región del Libertador B. O'Higgins">O'Higgins</option>
+            <option value="Región del Maule">Maule</option>
+            <option value="Región de Ñuble">Ñuble</option>
+            <option value="Región del Biobío">Biobío</option>
+            <option value="Región de La Araucanía">Araucanía</option>
+            <option value="Región de Los Ríos">Los Ríos</option>
+            <option value="Región de Los Lagos">Los Lagos</option>
+            <option value="Región de Aysén">Aysén</option>
+            <option value="Región de Magallanes">Magallanes</option>
+          </select>
+          <div class="field-error" id="errRegion">⚠ Selecciona la región.</div>
+        </div>
+        <div class="field-group">
+          <label>Ciudad / Comuna <span class="req">*</span></label>
+          <input type="text" id="ciudad" placeholder="Ej: Santiago, Providencia...">
+          <div class="field-error" id="errCiudad">⚠ Ingresa la ciudad o comuna.</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Calle y Número <span class="req">*</span></label>
+        <input type="text" id="calle" placeholder="Ej: Av. Providencia 1234">
+        <div class="field-error" id="errCalle">⚠ Ingresa la dirección.</div>
+      </div>
+
+      <div class="cols-2">
+        <div class="field-group">
+          <label>Depto / Oficina / Piso <span class="tip">opcional</span></label>
+          <input type="text" id="depto" placeholder="Ej: Depto 301, Piso 4, Of. 12">
+        </div>
+        <div class="field-group">
+          <label>Código Postal <span class="tip">opcional</span></label>
+          <input type="text" id="codigoPostal" placeholder="Ej: 7500000" maxlength="7">
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(3)">← Volver</button>
+        <button class="btn btn-next" onclick="goStep(5)">Siguiente →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PASO 5: DATOS SII / TRIBUTARIOS ══ -->
+  <div class="card" id="step5">
+    <div class="card-header">
+      <div class="card-step-num">Paso 05 de 06</div>
+      <div class="card-title">Datos Tributarios — SII</div>
+      <div class="card-sub">Información para el Inicio de Actividades</div>
+    </div>
+    <div class="card-body">
+
+      <div class="field-group">
+        <label>Régimen Tributario <span class="req">*</span></label>
+        <select id="regimen">
+          <option value="">— Selecciona —</option>
+          <option value="ProPYME General">Pro-PYME General (ventas ≤ UF 75.000/año · impuesto 25%) — Recomendado</option>
+          <option value="ProPYME Transparente">Pro-PYME Transparente (0% empresa, tributas como persona · más simple)</option>
+          <option value="Régimen General">Régimen General (sin límite ventas · impuesto 27%)</option>
+        </select>
+        <div class="field-error" id="errRegimen">⚠ Selecciona el régimen tributario.</div>
+        <div class="field-hint">Si no sabes cuál elegir: <strong>Pro-PYME General</strong> es la mejor opción para comenzar. Puedes cambiarlo una vez al año.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Fecha de Inicio de Actividades <span class="req">*</span></label>
+        <input type="date" id="fechaInicio">
+        <div class="field-error" id="errFecha">⚠ Selecciona la fecha de inicio.</div>
+        <div class="field-hint">La fecha en que comenzarás a operar y generar ingresos. Puede ser hoy mismo.</div>
+      </div>
+
+      <div class="field-group">
+        <label>¿Emitirás boletas a consumidores finales? <span class="req">*</span></label>
+        <select id="boletas">
+          <option value="">— Selecciona —</option>
+          <option value="si">Sí — Vendo a personas naturales (consumidor)</option>
+          <option value="no">No — Solo facturo a otras empresas</option>
+          <option value="ambos">Ambos — A personas y empresas</option>
+        </select>
+      </div>
+
+      <div class="field-group">
+        <label>¿Tienes o tendrás trabajadores contratados?</label>
+        <select id="trabajadores">
+          <option value="no">No por ahora — solo yo</option>
+          <option value="si1-5">Sí, entre 1 y 5 trabajadores</option>
+          <option value="si6-20">Sí, entre 6 y 20 trabajadores</option>
+          <option value="si20+">Sí, más de 20 trabajadores</option>
+        </select>
+        <div class="field-hint">Si tienes trabajadores deberás inscribirlos en AFP, Isapre/Fonasa y pagar cotizaciones cada mes.</div>
+      </div>
+
+      <div class="field-group">
+        <label>Representante Legal <span class="req">*</span></label>
+        <input type="text" id="repLegal" placeholder="Nombre completo del representante legal">
+        <div class="field-error" id="errRepLegal">⚠ Ingresa el nombre del representante legal.</div>
+        <div class="field-hint">Es la persona que firma ante el SII y terceros. Debe tener Clave Única.</div>
+      </div>
+
+      <div class="cols-2">
+        <div class="field-group">
+          <label>RUT Representante <span class="req">*</span></label>
+          <input type="text" id="rutRep" placeholder="Ej: 12.345.678-9" maxlength="12" oninput="formatRut(this)">
+          <div class="field-error" id="errRutRep">⚠ Ingresa el RUT del representante.</div>
+        </div>
+        <div class="field-group">
+          <label>Email de Contacto <span class="req">*</span></label>
+          <input type="email" id="emailContacto" placeholder="empresa@correo.cl">
+          <div class="field-error" id="errEmail">⚠ Ingresa un email válido.</div>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <label>Teléfono de Contacto <span class="tip">opcional</span></label>
+        <input type="tel" id="telefono" placeholder="+56 9 1234 5678">
+      </div>
+
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(4)">← Volver</button>
+        <button class="btn btn-next" onclick="goStep(6)">Ver Resumen →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ PASO 6: RESUMEN ══ -->
+  <div class="card" id="step6">
+    <div class="card-header">
+      <div class="card-step-num">Paso 06 de 06</div>
+      <div class="card-title">Resumen de tu Empresa</div>
+      <div class="card-sub">Revisa que todo esté correcto antes de generar el documento</div>
+    </div>
+    <div class="card-body" id="resumenBody">
+      <!-- Generado dinámicamente -->
+      <div class="btn-row">
+        <button class="btn btn-back" onclick="goStep(5)">← Corregir</button>
+        <button class="btn btn-submit" onclick="submitForm()">✓ Confirmar y Generar Documento</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ ÉXITO ══ -->
+  <div class="card" id="stepOk">
+    <div class="card-body">
+      <div class="success-screen show">
+        <div class="success-icon">✅</div>
+        <div class="success-title">¡Tu formulario está listo!</div>
+        <div class="success-sub">Hemos reunido toda la información necesaria. Ahora sigues estos pasos para crear tu empresa de forma oficial.</div>
+
+        <div class="next-steps">
+          <h4>📋 Próximos pasos</h4>
+          <div class="next-step-item">
+            <div class="ns-num">1</div>
+            <div class="ns-text"><strong>Obtén tu Clave Única</strong> si aún no la tienes → <a class="ns-link" href="https://claveunica.gob.cl" target="_blank">claveunica.gob.cl</a></div>
+          </div>
+          <div class="next-step-item">
+            <div class="ns-num">2</div>
+            <div class="ns-text"><strong>Ingresa a Empresa en un Día</strong> con los datos de este formulario → <a class="ns-link" href="https://www.empresaenundia.cl" target="_blank">empresaenundia.cl</a></div>
+          </div>
+          <div class="next-step-item">
+            <div class="ns-num">3</div>
+            <div class="ns-text"><strong>Descarga tu RUT</strong> al finalizar la constitución (SpA/EIRL: automático)</div>
+          </div>
+          <div class="next-step-item">
+            <div class="ns-num">4</div>
+            <div class="ns-text"><strong>Inicio de Actividades en el SII</strong> → Formulario F3230 → <a class="ns-link" href="https://www.sii.cl" target="_blank">sii.cl</a></div>
+          </div>
+          <div class="next-step-item">
+            <div class="ns-num">5</div>
+            <div class="ns-text"><strong>Activa la Facturación Electrónica MIPYME</strong> — gratis en el mismo SII</div>
+          </div>
+          <div class="next-step-item">
+            <div class="ns-num">6</div>
+            <div class="ns-text"><strong>Solicita la Patente Municipal</strong> en tu municipalidad</div>
+          </div>
+        </div>
+
+        <div id="resumenFinal" style="max-width:540px;margin:0 auto 28px;text-align:left"></div>
+
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap">
+          <button class="btn-submit btn" id="btnPDF" onclick="generarPDF()" style="background:#E63946;box-shadow:0 4px 16px rgba(230,57,70,.3);font-size:16px;padding:15px 32px">&#128196; Descargar PDF</button>
+          <button class="btn-new" onclick="resetForm()">+ Nuevo Formulario</button>
+        </div>
+        <p style="font-size:12px;color:var(--gris);margin-top:14px">Se abrira una ventana para guardar como PDF o imprimir</p>
+
+        <!-- NOTA IMPORTANTE -->
+        <div style="max-width:580px;margin:36px auto 0;border-radius:20px;overflow:hidden;box-shadow:0 8px 40px rgba(10,35,66,.2)">
+          <div style="background:#0A2342;padding:22px 30px;display:flex;align-items:center;gap:14px;border-bottom:3px solid #F4A522">
+            <div style="font-size:32px">&#128203;</div>
+            <div>
+              <div style="font-family:'Syne',sans-serif;font-size:20px;font-weight:800;color:#F4A522">PASO FINAL IMPORTANTE</div>
+              <div style="font-size:13px;color:rgba(255,255,255,.5);margin-top:2px">Para completar el proceso debes enviar tu formulario</div>
+            </div>
+          </div>
+          <div style="background:#F8FAFC;padding:26px 30px">
+            <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:18px">
+              <div style="width:32px;height:32px;border-radius:50%;background:#E63946;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif">1</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:#0A2342;margin-bottom:3px">Descarga el PDF de tu formulario</div>
+                <div style="font-size:13px;color:#64748B;line-height:1.55">Haz clic en el boton rojo <strong>Descargar PDF</strong> que esta arriba. Guardalo en tu computador o celular.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:18px">
+              <div style="width:32px;height:32px;border-radius:50%;background:#F4A522;color:#0A2342;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif">2</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:#0A2342;margin-bottom:3px">Haz clic en el boton de abajo</div>
+                <div style="font-size:13px;color:#64748B;line-height:1.55">Se abrira tu correo con el destinatario y el asunto <strong>ya completados</strong>. Solo adjunta el PDF que guardaste.</div>
+              </div>
+            </div>
+            <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:24px">
+              <div style="width:32px;height:32px;border-radius:50%;background:#10B981;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-family:'Syne',sans-serif">3</div>
+              <div>
+                <div style="font-size:15px;font-weight:700;color:#0A2342;margin-bottom:3px">Adjunta el PDF y envia el correo</div>
+                <div style="font-size:13px;color:#64748B;line-height:1.55">Tu asesor recibira la informacion, la revisara y te contactara para guiarte en los proximos pasos oficiales.</div>
+              </div>
+            </div>
+            <div style="background:#fff;border:1.5px solid #E2E8F0;border-radius:14px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px">
+              <div style="width:48px;height:48px;border-radius:50%;background:linear-gradient(135deg,#0A2342,#1B3A6B);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0">&#128188;</div>
+              <div style="flex:1">
+                <div style="font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:#0A2342">Miguel Del Valle</div>
+                <div style="font-size:12px;color:#64748B;margin-bottom:3px">Asesor en Constitucion de Empresas - Chile &#127464;&#127473;</div>
+                <div style="font-size:13px;color:#2563EB;font-weight:700;font-family:'DM Mono',monospace">conta.migueldelvalle&#64;gmail.com</div>
+              </div>
+            </div>
+            <button onclick="enviarEmail()" style="width:100%;padding:17px;background:linear-gradient(135deg,#0A2342,#1B3A6B);color:#fff;border:none;border-radius:12px;font-family:'Syne',sans-serif;font-size:17px;font-weight:800;cursor:pointer;margin-bottom:14px;box-shadow:0 4px 20px rgba(10,35,66,.25);transition:all .2s"
+              onmouseover="this.style.opacity='.88';this.style.transform='translateY(-1px)'"
+              onmouseout="this.style.opacity='1';this.style.transform='translateY(0)'">
+              &#9993;&#160; Abrir correo para enviar a Miguel Del Valle
+            </button>
+            <div style="background:#FEF3C7;border:1px solid #F4A522;border-radius:10px;padding:13px 16px;font-size:13px;color:#92400E;line-height:1.65;text-align:center">
+              <strong>&#9888;&#65039; Recuerda:</strong> Adjunta el PDF antes de enviar el correo.<br>Sin el PDF tu asesor no podra revisar tu informacion.
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="footer">
+  🇨🇱 Guía informativa conforme a legislación chilena vigente · Ley 20.659 · Código de Comercio · Normativa SII 2026<br>
+  Este formulario no tiene valor legal por sí solo. Debes completar el trámite oficial en <strong>empresaenundia.cl</strong> y <strong>sii.cl</strong>.
+</div>
+
+</div><!-- /app-wrap -->
+
+<div class="footer">
+  &#127464;&#127473; Guia informativa conforme a legislacion chilena vigente &middot; Ley 20.659 &middot; Codigo de Comercio &middot; Normativa SII 2026<br>
+  Este formulario no tiene valor legal por si solo. Completa el tramite oficial en <strong>empresaenundia.cl</strong> y <strong>sii.cl</strong>.
+</div>
+
+</div><!-- /app-wrap -->
+
+<script>
+// ═══════════════════════════════════════════════════════
+// SISTEMA DE CLAVES
+// ═══════════════════════════════════════════════════════
+var KU = 'emp_cu';
+var KA = 'emp_ca';
+function getCU() { return localStorage.getItem(KU) || 'usuario2026'; }
+function getCA() { return localStorage.getItem(KA) || 'admin2026'; }
+
+var rolActivo = 'usuario';
+var verU = false;
+var verA = false;
+var tabActiva = 'usuario';
+
+function selectRol(rol) {
+  rolActivo = rol;
+  var dU = document.getElementById('rolUsuario');
+  var dA = document.getElementById('rolAdmin');
+  if (rol === 'usuario') {
+    dU.style.border = '2px solid var(--oro)';
+    dU.style.background = 'rgba(244,165,34,.15)';
+    dA.style.border = '2px solid rgba(255,255,255,.15)';
+    dA.style.background = 'rgba(255,255,255,.06)';
+  } else {
+    dA.style.border = '2px solid var(--oro)';
+    dA.style.background = 'rgba(244,165,34,.15)';
+    dU.style.border = '2px solid rgba(255,255,255,.15)';
+    dU.style.background = 'rgba(255,255,255,.06)';
+  }
+}
+
+function doLogin() {
+  var input = document.getElementById('loginInput');
+  var val = input.value;
+  var esperada = rolActivo === 'admin' ? getCA() : getCU();
+  if (!val) {
+    input.classList.add('error');
+    document.getElementById('loginErrorMsg').textContent = 'Ingresa tu clave.';
+    return;
+  }
+  if (val === esperada) {
+    document.getElementById('loginOverlay').style.display = 'none';
+    if (rolActivo === 'admin') {
+      document.getElementById('panelAdmin').style.display = 'block';
+      resetDisplays();
+      selectTab('usuario');
+    } else {
+      document.getElementById('appWrap').classList.add('visible');
+    }
+    input.value = '';
+  } else {
+    input.classList.add('error');
+    document.getElementById('loginErrorMsg').textContent = 'Clave incorrecta. Intentalo de nuevo.';
+    input.focus();
+  }
+}
+
+function toggleLoginEye() {
+  var inp = document.getElementById('loginInput');
+  var btn = document.getElementById('loginEyeBtn');
+  inp.type = inp.type === 'password' ? 'text' : 'password';
+  btn.innerHTML = inp.type === 'password' ? '&#128065;' : '&#128584;';
+}
+
+// Panel admin
+function resetDisplays() {
+  verU = false; verA = false;
+  document.getElementById('displayClaveUsuario').innerHTML = '&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;';
+  document.getElementById('displayClaveAdmin').innerHTML   = '&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;&#8226;';
+  document.getElementById('btnVerUsuario').innerHTML = '&#128065; Ver';
+  document.getElementById('btnVerAdmin').innerHTML   = '&#128065; Ver';
+}
+
+function toggleVer(rol) {
+  if (rol === 'usuario') {
+    verU = !verU;
+    document.getElementById('displayClaveUsuario').textContent = verU ? getCU() : '••••••••';
+    document.getElementById('btnVerUsuario').innerHTML = verU ? '&#128584; Ocultar' : '&#128065; Ver';
+  } else {
+    verA = !verA;
+    document.getElementById('displayClaveAdmin').textContent = verA ? getCA() : '••••••••';
+    document.getElementById('btnVerAdmin').innerHTML = verA ? '&#128584; Ocultar' : '&#128065; Ver';
+  }
+}
+
+function selectTab(tab) {
+  tabActiva = tab;
+  var tU = document.getElementById('tabU');
+  var tA = document.getElementById('tabA');
+  if (tab === 'usuario') {
+    tU.style.border = '2px solid var(--azulV)'; tU.style.background = 'rgba(37,99,235,.2)';
+    tU.querySelector('div:last-child').style.color = '#fff';
+    tA.style.border = '2px solid rgba(255,255,255,.15)'; tA.style.background = 'rgba(255,255,255,.04)';
+    tA.querySelector('div:last-child').style.color = 'rgba(255,255,255,.5)';
+  } else {
+    tA.style.border = '2px solid var(--oro)'; tA.style.background = 'rgba(244,165,34,.15)';
+    tA.querySelector('div:last-child').style.color = '#fff';
+    tU.style.border = '2px solid rgba(255,255,255,.15)'; tU.style.background = 'rgba(255,255,255,.04)';
+    tU.querySelector('div:last-child').style.color = 'rgba(255,255,255,.5)';
+  }
+  document.getElementById('inputNueva').value = '';
+  document.getElementById('inputConfirm').value = '';
+  document.getElementById('errNueva').textContent = '';
+  document.getElementById('errConfirm').textContent = '';
+  document.getElementById('okMsg').textContent = '';
+}
+
+function guardarClave() {
+  var nueva   = document.getElementById('inputNueva').value;
+  var confirm = document.getElementById('inputConfirm').value;
+  var ok = true;
+  if (nueva.length < 6) {
+    document.getElementById('errNueva').textContent = 'Minimo 6 caracteres.';
+    ok = false;
+  } else { document.getElementById('errNueva').textContent = ''; }
+  if (nueva !== confirm) {
+    document.getElementById('errConfirm').textContent = 'Las claves no coinciden.';
+    ok = false;
+  } else { document.getElementById('errConfirm').textContent = ''; }
+  if (ok) {
+    localStorage.setItem(tabActiva === 'usuario' ? KU : KA, nueva);
+    document.getElementById('inputNueva').value = '';
+    document.getElementById('inputConfirm').value = '';
+    document.getElementById('okMsg').textContent = 'Clave de ' + (tabActiva === 'usuario' ? 'Usuario' : 'Administrador') + ' actualizada.';
+    if (tabActiva === 'usuario' && verU) document.getElementById('displayClaveUsuario').textContent = nueva;
+    if (tabActiva === 'admin'   && verA) document.getElementById('displayClaveAdmin').textContent   = nueva;
+    setTimeout(function() { document.getElementById('okMsg').textContent = ''; }, 3500);
+  }
+}
+
+function cerrarAdmin() {
+  document.getElementById('panelAdmin').style.display = 'none';
+  document.getElementById('loginOverlay').style.display = 'flex';
+  document.getElementById('loginInput').value = '';
+  document.getElementById('loginErrorMsg').textContent = '';
+  rolActivo = 'usuario';
+  selectRol('usuario');
+}
+
+function enviarEmail() {
+  var sufijo = (typeof SUFIJOS !== 'undefined' && SUFIJOS[tipoEmpresa]) ? SUFIJOS[tipoEmpresa] : '';
+  var nombre = ((v('razonSocial') || '') + ' ' + sufijo).trim() || 'Sin nombre';
+  var socsT = socios.map(function(s, i) {
+    return '  ' + (s.esRepresentante ? 'Rep. Legal' : 'Socio ' + (i+1)) +
+      ': ' + (s.nombre || '-') + ' - RUT: ' + (s.rut || '-') +
+      (s.porcentaje ? ' - ' + s.porcentaje + '%' : '');
+  }).join('\n');
+  var asunto = encodeURIComponent('Formulario Constitucion Empresa - ' + nombre);
+  var cuerpo = encodeURIComponent(
+    'Estimado Miguel,\n\n' +
+    'Le envio adjunto el PDF con mi formulario de constitucion de empresa.\n\n' +
+    'EMPRESA: ' + nombre + '\n' +
+    'TIPO: ' + tipoEmpresa + '\n' +
+    'GIRO: ' + (v('giro') || '-') + '\n' +
+    'CAPITAL: $' + capitalVal.toLocaleString('es-CL') + ' ' + (v('monedaCapital') || 'CLP') + '\n' +
+    'REGIMEN SII: ' + (v('regimen') || '-') + '\n' +
+    'INICIO ACTIVIDAD: ' + (v('fechaInicio') || '-') + '\n\n' +
+    'SOCIOS:\n' + socsT + '\n\n' +
+    'DOMICILIO: ' + (v('calle') || '-') + ', ' + (v('ciudad') || '-') + ', ' + (v('region') || '-') + '\n\n' +
+    'REPRESENTANTE: ' + (v('repLegal') || '-') + '\n' +
+    'RUT: ' + (v('rutRep') || '-') + '\n' +
+    'EMAIL: ' + (v('emailContacto') || '-') + '\n' +
+    'TEL: ' + (v('telefono') || '-') + '\n\n' +
+    'Saludos,\n' + (v('repLegal') || 'El cliente')
+  );
+  window.location.href = 'mailto:conta.migueldelvalle@gmail.com?subject=' + asunto + '&body=' + cuerpo;
+}
+
+// ═══════════════════════════════════════════════════════
+// FORMULARIO PRINCIPAL
+// ═══════════════════════════════════════════════════════
+// ── ESTADO ──────────────────────────────────────────────
+let currentStep = 1;
+let totalSteps = 6;
+let tipoEmpresa = '';
+let socios = [];
+let capitalVal = 1000000;
+
+const SUFIJOS = { SpA:'SpA', EIRL:'E.I.R.L.', Ltda:'Ltda.', SA:'S.A.' };
+
+const CAPITAL_VALUES = [
+  100000,200000,300000,500000,
+  750000,1000000,1500000,2000000,
+  3000000,5000000,7500000,10000000,
+  15000000,20000000,30000000,50000000,
+  75000000,100000000,200000000,500000000
+];
+
+// ── PROGRESS BAR ─────────────────────────────────────────
+const STEP_LABELS = ['Tipo empresa','Datos empresa','Socios','Domicilio','SII','Resumen'];
+
+function renderProgress() {
+  const bar = document.getElementById('progressBar');
+  bar.innerHTML = STEP_LABELS.map((l,i) => {
+    const n = i+1;
+    const cls = n < currentStep ? 'done' : n === currentStep ? 'active' : '';
+    const icon = n < currentStep ? '✓' : n;
+    return `<div class="step-pill ${cls}">
+      <div class="step-circle">${icon}</div>
+      <div class="step-label">${l}</div>
+    </div>`;
+  }).join('');
+}
+
+// ── NAVEGACIÓN ───────────────────────────────────────────
+function goStep(n) {
+  if (n > currentStep && !validateStep(currentStep)) return;
+
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  const target = document.getElementById('step' + (n === 7 ? 'Ok' : n));
+  if (!target) return;
+
+  if (n === 6) buildResumen();
+  if (n === 7) buildResumenFinal();
+
+  currentStep = n > 6 ? 6 : n;
+  target.classList.add('active');
+  renderProgress();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+// ── VALIDACIONES ──────────────────────────────────────────
+function validateStep(step) {
+  let ok = true;
+  const show = (id) => { document.getElementById(id).classList.add('show'); ok = false; };
+  const hide = (id) => { document.getElementById(id).classList.remove('show'); };
+
+  if (step === 1) {
+    if (!tipoEmpresa) { document.getElementById('errorTipo').style.display='block'; ok=false; }
+    else { document.getElementById('errorTipo').style.display='none'; }
+  }
+
+  if (step === 2) {
+    const r = v('razonSocial'); r ? hide('errRazon') : show('errRazon');
+    const g = v('giro');        g ? hide('errGiro')  : show('errGiro');
+    const o = v('objeto');      o ? hide('errObjeto'): show('errObjeto');
+    if (!r||!g||!o) ok=false;
+  }
+
+  if (step === 4) {
+    const td = v('tipoDomicilio'); td ? hide('errDomicilio') : show('errDomicilio');
+    const re = v('region');        re ? hide('errRegion')    : show('errRegion');
+    const ci = v('ciudad');        ci ? hide('errCiudad')    : show('errCiudad');
+    const ca = v('calle');         ca ? hide('errCalle')     : show('errCalle');
+    if (!td||!re||!ci||!ca) ok=false;
+  }
+
+  if (step === 5) {
+    const reg = v('regimen');      reg ? hide('errRegimen')  : show('errRegimen');
+    const fi  = v('fechaInicio');  fi  ? hide('errFecha')    : show('errFecha');
+    const rl  = v('repLegal');     rl  ? hide('errRepLegal') : show('errRepLegal');
+    const rr  = v('rutRep');       rr  ? hide('errRutRep')   : show('errRutRep');
+    const em  = v('emailContacto');
+    em && em.includes('@') ? hide('errEmail') : show('errEmail');
+    if (!reg||!fi||!rl||!rr||!em||!em.includes('@')) ok=false;
+  }
+
+  if (!ok) {
+    const firstErr = document.querySelector('.field-error.show, [style*="display:block"]');
+    if (firstErr) firstErr.scrollIntoView({ behavior:'smooth', block:'center' });
+  }
+  return ok;
+}
+
+function v(id) { return (document.getElementById(id)||{}).value?.trim()||''; }
+
+// ── TIPO EMPRESA ──────────────────────────────────────────
+const TIPO_INFO = {
+  SpA: { cost:'$0 — Online gratis', tiempo:'1 día · El mismo día', notario:'No requiere', url:'empresaenundia.cl', color:'var(--verde)', icon:'✅' },
+  EIRL:{ cost:'$0 — Online gratis', tiempo:'1 día · El mismo día', notario:'No requiere', url:'empresaenundia.cl', color:'var(--azulV)', icon:'✅' },
+  Ltda:{ cost:'$200.000–$470.000', tiempo:'3–7 días hábiles', notario:'Sí, requiere notario', url:'Notaría + Conservador + Diario Oficial', color:'var(--oro)', icon:'⚠️' },
+  SA:  { cost:'$300.000–$600.000+', tiempo:'5–10 días hábiles', notario:'Sí, requiere notario y directorio', url:'Notaría + Conservador + Diario Oficial', color:'var(--rojo)', icon:'⚠️' },
+};
+
+const TIPO_MAX_SOCIOS = { SpA:'Ilimitados', EIRL:'Solo 1 (persona natural)', Ltda:'Máximo 50', SA:'Ilimitados' };
+
+function selectTipo(el, tipo) {
+  document.querySelectorAll('.tipo-card').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  tipoEmpresa = tipo;
+  document.getElementById('errorTipo').style.display = 'none';
+  autoSufijo();
+
+  const info = TIPO_INFO[tipo];
+  const infoEl = document.getElementById('tipoInfo');
+  infoEl.style.display = 'block';
+  infoEl.innerHTML = `<div class="ok-box" style="border-left-color:${info.color}">
+    ${info.icon} <strong>Seleccionaste: ${tipo === 'SA' ? 'S.A.' : tipo === 'EIRL' ? 'EIRL' : tipo === 'Ltda' ? 'Ltda.' : 'SpA'}</strong> &nbsp;·&nbsp;
+    Costo de constitución: <strong>${info.cost}</strong> &nbsp;·&nbsp;
+    Tiempo: <strong>${info.tiempo}</strong> &nbsp;·&nbsp;
+    Socios: <strong>${TIPO_MAX_SOCIOS[tipo]}</strong>
+  </div>`;
+
+  // Mostrar/ocultar botón agregar socio
+  updateSocioUI();
+}
+
+function updateSocioUI() {
+  const btn = document.getElementById('btnAddSocio');
+  if (!btn) return;
+  if (tipoEmpresa === 'EIRL') {
+    btn.style.display = 'none';
+    if (socios.length === 0) addSocio();
+    else if (socios.length > 1) { socios = [socios[0]]; renderSocios(); }
+  } else {
+    btn.style.display = 'block';
+    if (socios.length === 0) addSocio();
+  }
+}
+
+// ── SUFIJO AUTOMÁTICO ─────────────────────────────────────
+function autoSufijo() {
+  const rs = v('razonSocial');
+  const sfx = SUFIJOS[tipoEmpresa] || '';
+  const comp = document.getElementById('nombreCompleto');
+  if (comp) comp.value = rs && sfx ? `${rs} ${sfx}` : rs || '';
+}
+
+// ── GIRO SUGERENCIAS ──────────────────────────────────────
+function setGiro(el, giro) {
+  document.querySelectorAll('.giro-tag').forEach(t => t.classList.remove('sel'));
+  el.classList.add('sel');
+  document.getElementById('giro').value = giro;
+  counter('giro','c3',80);
+  document.getElementById('errGiro').classList.remove('show');
+}
+
+// ── SOCIOS ────────────────────────────────────────────────
+let socioId = 0;
+
+function addSocio() {
+  const id = ++socioId;
+  socios.push({ id, nombre:'', rut:'', email:'', porcentaje:'', esRepresentante: socios.length===0 });
+  renderSocios();
+}
+
+function removeSocio(id) {
+  socios = socios.filter(s => s.id !== id);
+  renderSocios();
+}
+
+function renderSocios() {
+  const container = document.getElementById('sociosList');
+  container.innerHTML = socios.map((s, idx) => `
+    <div class="socio-row" id="socio-${s.id}">
+      <div class="socio-title">
+        👤 ${tipoEmpresa === 'EIRL' ? 'Titular' : `Socio ${idx+1}`}
+        ${socios.length > 1 ? `<button class="btn-remove-socio" onclick="removeSocio(${s.id})">✕ Quitar</button>` : ''}
+      </div>
+      <div class="cols-2">
+        <div class="field-group" style="margin-bottom:14px">
+          <label style="font-size:12px">Nombre completo</label>
+          <input type="text" placeholder="Nombre y apellidos" value="${s.nombre}" oninput="updateSocio(${s.id},'nombre',this.value)">
+        </div>
+        <div class="field-group" style="margin-bottom:14px">
+          <label style="font-size:12px">RUT</label>
+          <input type="text" placeholder="12.345.678-9" maxlength="12" value="${s.rut}" oninput="formatRut(this);updateSocio(${s.id},'rut',this.value)">
+        </div>
+      </div>
+      <div class="cols-2">
+        <div class="field-group" style="margin-bottom:14px">
+          <label style="font-size:12px">Email</label>
+          <input type="email" placeholder="correo@email.cl" value="${s.email}" oninput="updateSocio(${s.id},'email',this.value)">
+        </div>
+        ${tipoEmpresa !== 'EIRL' ? `
+        <div class="field-group" style="margin-bottom:14px">
+          <label style="font-size:12px">% de participación</label>
+          <input type="number" placeholder="Ej: 50" min="1" max="100" value="${s.porcentaje}" oninput="updateSocio(${s.id},'porcentaje',this.value)">
+        </div>` : ''}
+      </div>
+      <div class="field-group" style="margin-bottom:0">
+        <label style="display:flex;align-items:center;gap:8px;cursor:pointer;font-size:12px;font-weight:500">
+          <input type="checkbox" ${s.esRepresentante?'checked':''} onchange="setRepresentante(${s.id},this.checked)" style="width:auto;border:none;padding:0;border-radius:0">
+          Este socio es el Representante Legal de la empresa
+        </label>
+      </div>
+    </div>
+  `).join('');
+}
+
+function updateSocio(id, key, val) {
+  const s = socios.find(s => s.id === id);
+  if (s) s[key] = val;
+}
+
+function setRepresentante(id, checked) {
+  socios.forEach(s => s.esRepresentante = false);
+  const s = socios.find(s => s.id === id);
+  if (s) s.esRepresentante = checked;
+  // Sync con campo representante legal
+  if (checked && s?.nombre) {
+    document.getElementById('repLegal').value = s.nombre;
+    if (s.rut) document.getElementById('rutRep').value = s.rut;
+    if (s.email) document.getElementById('emailContacto').value = s.email;
+  }
+}
+
+// ── CAPITAL ───────────────────────────────────────────────
+function updateCapital() {
+  const idx = parseInt(document.getElementById('capitalSlider').value);
+  capitalVal = CAPITAL_VALUES[idx];
+  document.getElementById('capitalDisplay').textContent = '$ ' + capitalVal.toLocaleString('es-CL');
+  document.getElementById('capitalExacto').value = capitalVal;
+}
+
+function updateCapitalExacto() {
+  const val = parseInt(document.getElementById('capitalExacto').value.replace(/\D/g,'')) || 0;
+  capitalVal = val;
+  document.getElementById('capitalDisplay').textContent = '$ ' + val.toLocaleString('es-CL');
+}
+
+// ── DOMICILIO TIPS ────────────────────────────────────────
+const DOM_TIPS = {
+  casa:    '<div class="ok-box" style="margin:0">✅ <strong>Casa/Depto:</strong> Válido. Necesitas una boleta de servicios básicos con esa dirección.</div>',
+  oficina: '<div class="info-box" style="margin:0">📋 <strong>Oficina arrendada:</strong> Necesitas el contrato de arrendamiento firmado.</div>',
+  cowork:  '<div class="info-box" style="margin:0">💼 <strong>Coworking:</strong> Pide al proveedor un certificado de domicilio. Cuesta desde $20.000/mes.</div>',
+  local:   '<div class="info-box" style="margin:0">🏪 <strong>Local comercial:</strong> Necesitas el contrato o título de propiedad + Patente Municipal.</div>',
+  otro:    '<div class="warn-box" style="margin:0">⚠️ Asegúrate de tener documentos que acrediten el domicilio ante el SII.</div>',
+};
+
+function updateDomicilioTips() {
+  const tipo = v('tipoDomicilio');
+  const el = document.getElementById('domicilioTip');
+  el.innerHTML = DOM_TIPS[tipo] || '';
+  if (tipo) document.getElementById('errDomicilio').classList.remove('show');
+}
+
+// ── FORMATO RUT ───────────────────────────────────────────
+function formatRut(input) {
+  let val = input.value.replace(/[^0-9kK]/g,'').toUpperCase();
+  if (val.length > 1) {
+    const dv = val.slice(-1);
+    let num = val.slice(0,-1).replace(/\B(?=(\d{3})+(?!\d))/g,'.');
+    input.value = num + '-' + dv;
+  } else {
+    input.value = val;
+  }
+}
+
+// ── COUNTER ───────────────────────────────────────────────
+function counter(inputId, counterId, max) {
+  const len = (document.getElementById(inputId)||{}).value?.length || 0;
+  const el = document.getElementById(counterId);
+  if (el) el.textContent = `${len} / ${max}`;
+}
+
+// ── RESUMEN ───────────────────────────────────────────────
+function buildResumen() {
+  const body = document.getElementById('resumenBody');
+  const tipo = tipoEmpresa === 'SA' ? 'S.A. (Sociedad Anónima)' : tipoEmpresa === 'EIRL' ? 'EIRL (Empresa Individual)' : tipoEmpresa === 'Ltda' ? 'Sociedad Limitada' : 'SpA (Sociedad por Acciones)';
+
+  const socioRows = socios.map(s => `<div class="resumen-row"><div class="resumen-key">👤 ${s.esRepresentante?'<strong>Representante</strong>':'Socio'}</div><div class="resumen-val">${s.nombre||'—'} · ${s.rut||'—'}${s.porcentaje?' · '+s.porcentaje+'%':''}</div></div>`).join('');
+
+  body.innerHTML = `
+    <div class="resumen-section">
+      <div class="resumen-title">🏢 Tipo y Nombre</div>
+      <div class="resumen-row"><div class="resumen-key">Tipo de empresa</div><div class="resumen-val"><span class="badge">${tipoEmpresa}</span>${tipo}</div></div>
+      <div class="resumen-row"><div class="resumen-key">Nombre legal</div><div class="resumen-val"><strong>${v('razonSocial')} ${SUFIJOS[tipoEmpresa]||''}</strong></div></div>
+      ${v('nombreFantasia') ? `<div class="resumen-row"><div class="resumen-key">Nombre fantasía</div><div class="resumen-val">${v('nombreFantasia')}</div></div>` : ''}
+      <div class="resumen-row"><div class="resumen-key">Giro principal</div><div class="resumen-val">${v('giro')}</div></div>
+      ${v('giro2') ? `<div class="resumen-row"><div class="resumen-key">Giro secundario</div><div class="resumen-val">${v('giro2')}</div></div>` : ''}
+    </div>
+
+    <div class="resumen-section">
+      <div class="resumen-title">👥 Socios y Capital</div>
+      ${socioRows}
+      <div class="resumen-row"><div class="resumen-key">Capital social</div><div class="resumen-val"><strong>$ ${capitalVal.toLocaleString('es-CL')}</strong> ${v('monedaCapital')}</div></div>
+    </div>
+
+    <div class="resumen-section">
+      <div class="resumen-title">📍 Domicilio</div>
+      <div class="resumen-row"><div class="resumen-key">Tipo</div><div class="resumen-val">${v('tipoDomicilio')}</div></div>
+      <div class="resumen-row"><div class="resumen-key">Dirección</div><div class="resumen-val">${v('calle')}${v('depto')?' '+v('depto'):''}, ${v('ciudad')}, ${v('region')}</div></div>
+      ${v('codigoPostal') ? `<div class="resumen-row"><div class="resumen-key">Código Postal</div><div class="resumen-val">${v('codigoPostal')}</div></div>` : ''}
+    </div>
+
+    <div class="resumen-section">
+      <div class="resumen-title">🧾 Datos SII</div>
+      <div class="resumen-row"><div class="resumen-key">Régimen tributario</div><div class="resumen-val">${v('regimen')}</div></div>
+      <div class="resumen-row"><div class="resumen-key">Inicio de actividades</div><div class="resumen-val">${v('fechaInicio')}</div></div>
+      <div class="resumen-row"><div class="resumen-key">Representante legal</div><div class="resumen-val">${v('repLegal')} · ${v('rutRep')}</div></div>
+      <div class="resumen-row"><div class="resumen-key">Email</div><div class="resumen-val">${v('emailContacto')}</div></div>
+      ${v('telefono') ? `<div class="resumen-row"><div class="resumen-key">Teléfono</div><div class="resumen-val">${v('telefono')}</div></div>` : ''}
+    </div>
+
+    <div class="ok-box">✅ Revisa que todo esté correcto. Si necesitas corregir algo, usa el botón "← Corregir".</div>
+
+    <div class="btn-row">
+      <button class="btn btn-back" onclick="goStep(5)">← Corregir</button>
+      <button class="btn btn-submit" onclick="submitForm()">✓ Confirmar y Generar Documento</button>
+    </div>
+  `;
+}
+
+function buildResumenFinal() {
+  // No-op: PDF se genera al hacer clic
+}
+
+function submitForm() {
+  document.querySelectorAll('.card').forEach(c => c.classList.remove('active'));
+  document.getElementById('stepOk').classList.add('active');
+  currentStep = 7;
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+
+function resetForm() {
+  location.reload();
+}
+
+
+
+// ── GENERADOR PDF ─────────────────────────────────────────
+function generarPDF() {
+  const btn = document.getElementById('btnPDF');
+  btn.textContent = '⏳ Generando PDF...';
+  btn.disabled = true;
+
+  const nombreEmpresa = `${v('razonSocial')} ${SUFIJOS[tipoEmpresa]||''}`.trim();
+  const fecha = new Date().toLocaleDateString('es-CL', { year:'numeric', month:'long', day:'numeric' });
+  const socioRows = socios.map((s,i) => `
+    <tr>
+      <td>${s.esRepresentante ? '<strong>Rep. Legal</strong>' : 'Socio '+(i+1)}</td>
+      <td>${s.nombre||'—'}</td>
+      <td>${s.rut||'—'}</td>
+      <td>${s.porcentaje ? s.porcentaje+'%' : '—'}</td>
+    </tr>`).join('');
+
+  const html = `<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',Arial,sans-serif;font-size:11pt;color:#1E293B;background:#fff;}
+
+  /* PORTADA */
+  .portada{background:#0A2342;color:#fff;padding:0;page-break-after:always;min-height:100vh;display:flex;flex-direction:column;}
+  .portada-flag{background:#E63946;width:16px;position:fixed;top:0;left:0;height:100%;}
+  .portada-gold{background:#F4A522;width:5px;position:fixed;top:0;left:16px;height:100%;}
+  .portada-content{padding:60px 60px 40px 52px;flex:1;}
+  .portada-badge{display:inline-block;background:rgba(244,165,34,.2);border:1px solid rgba(244,165,34,.4);color:#FCD34D;font-size:9pt;font-weight:600;padding:4px 14px;border-radius:20px;letter-spacing:1px;margin-bottom:28px;}
+  .portada-titulo{font-family:'Syne',Arial,sans-serif;font-size:38pt;font-weight:800;line-height:1.05;margin-bottom:10px;}
+  .portada-titulo span{color:#F4A522;}
+  .portada-empresa{font-size:16pt;color:rgba(255,255,255,.7);margin-bottom:48px;font-style:italic;}
+  .portada-datos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:20px;margin-bottom:48px;}
+  .portada-dato{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:18px 20px;}
+  .portada-dato-val{font-family:'Syne',Arial,sans-serif;font-size:20pt;font-weight:800;color:#F4A522;margin-bottom:4px;}
+  .portada-dato-lab{font-size:9pt;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.8px;}
+  .portada-footer{padding:20px 52px;background:rgba(0,0,0,.3);display:flex;justify-content:space-between;align-items:center;}
+  .portada-footer-txt{font-size:9pt;color:rgba(255,255,255,.4);}
+  .portada-footer-date{font-size:9pt;color:#F4A522;font-weight:600;}
+
+  /* PÁGINAS */
+  .page{padding:44px 50px;page-break-after:always;}
+  .page:last-child{page-break-after:avoid;}
+  .page-header{display:flex;align-items:center;gap:14px;margin-bottom:28px;padding-bottom:16px;border-bottom:2px solid #0A2342;}
+  .page-header-num{background:#0A2342;color:#F4A522;font-family:'DM Mono',monospace;font-size:9pt;font-weight:700;padding:4px 12px;border-radius:4px;letter-spacing:1px;}
+  .page-header-title{font-family:'Syne',Arial,sans-serif;font-size:16pt;font-weight:800;color:#0A2342;}
+  .page-footer{position:fixed;bottom:20px;left:50px;right:50px;display:flex;justify-content:space-between;font-size:8pt;color:#94A3B8;border-top:1px solid #E2E8F0;padding-top:8px;}
+
+  /* SECCIONES */
+  .seccion{margin-bottom:28px;}
+  .seccion-title{font-family:'Syne',Arial,sans-serif;font-size:10pt;font-weight:700;color:#64748B;text-transform:uppercase;letter-spacing:1.2px;margin-bottom:12px;padding-bottom:6px;border-bottom:1px solid #E2E8F0;}
+  .row{display:flex;padding:9px 0;border-bottom:1px solid #F1F5F9;}
+  .row:last-child{border-bottom:none;}
+  .row-key{font-size:10pt;color:#64748B;width:160px;flex-shrink:0;padding-right:12px;}
+  .row-val{font-size:10.5pt;color:#1E293B;font-weight:500;flex:1;}
+  .badge-tipo{display:inline-block;background:#0A2342;color:#F4A522;font-family:'DM Mono',monospace;font-size:8pt;padding:2px 8px;border-radius:3px;margin-right:6px;}
+
+  /* TABLA SOCIOS */
+  table{width:100%;border-collapse:collapse;margin-top:8px;}
+  th{background:#0A2342;color:#fff;text-align:left;padding:8px 12px;font-size:9pt;font-weight:600;}
+  td{padding:8px 12px;font-size:10pt;border-bottom:1px solid #F1F5F9;}
+  tr:nth-child(even) td{background:#F8FAFC;}
+
+  /* ALERT BOXES */
+  .alert{border-radius:6px;padding:12px 16px;font-size:10pt;line-height:1.6;margin-bottom:14px;}
+  .alert-blue{background:#EFF6FF;border-left:4px solid #2563EB;color:#1D4ED8;}
+  .alert-green{background:#D1FAE5;border-left:4px solid #10B981;color:#065F46;}
+  .alert-gold{background:#FEF3C7;border-left:4px solid #F4A522;color:#92400E;}
+
+  /* PRÓXIMOS PASOS */
+  .paso{display:flex;gap:14px;margin-bottom:14px;align-items:flex-start;}
+  .paso-num{width:28px;height:28px;border-radius:50%;background:#0A2342;color:#fff;font-size:10pt;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .paso-txt{font-size:10.5pt;color:#1E293B;line-height:1.55;padding-top:2px;}
+  .paso-txt strong{color:#0A2342;}
+  .paso-txt a{color:#2563EB;font-weight:600;}
+
+  /* FIRMA */
+  .firma-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:32px;}
+  .firma-box{border-top:1.5px solid #0A2342;padding-top:10px;}
+  .firma-label{font-size:9pt;color:#64748B;margin-bottom:4px;}
+  .firma-linea{height:48px;}
+  .firma-name{font-size:10pt;font-weight:600;color:#0A2342;}
+  .firma-rut{font-size:9pt;color:#64748B;}
+
+  @media print{
+    body{-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+    .portada{min-height:auto;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ══ PORTADA ══ -->
+<div class="portada">
+  <div class="portada-flag"></div>
+  <div class="portada-gold"></div>
+  <div class="portada-content">
+    <div class="portada-badge">🇨🇱 &nbsp; FORMULARIO OFICIAL &nbsp; · &nbsp; CHILE 2026</div>
+    <div class="portada-titulo">CONSTITUCIÓN<br>DE <span>EMPRESA</span></div>
+    <div class="portada-empresa">${nombreEmpresa || 'Sin nombre definido'}</div>
+    <div class="portada-datos">
+      <div class="portada-dato">
+        <div class="portada-dato-val">${tipoEmpresa === 'SA' ? 'S.A.' : tipoEmpresa === 'EIRL' ? 'EIRL' : tipoEmpresa === 'Ltda' ? 'Ltda.' : 'SpA'}</div>
+        <div class="portada-dato-lab">Tipo de empresa</div>
+      </div>
+      <div class="portada-dato">
+        <div class="portada-dato-val">$ ${capitalVal.toLocaleString('es-CL')}</div>
+        <div class="portada-dato-lab">Capital social</div>
+      </div>
+      <div class="portada-dato">
+        <div class="portada-dato-val">${socios.length}</div>
+        <div class="portada-dato-lab">${socios.length === 1 ? 'Socio / Titular' : 'Socios'}</div>
+      </div>
+    </div>
+    <div class="alert alert-blue">📋 Este documento contiene la información necesaria para completar la constitución oficial de la empresa en <strong>empresaenundia.cl</strong> y el Inicio de Actividades en <strong>sii.cl</strong>. Consérvalo como referencia.</div>
+  </div>
+  <div class="portada-footer">
+    <div class="portada-footer-txt">Conforme a Ley 20.659 · Código de Comercio · Normativa SII 2026</div>
+    <div class="portada-footer-date">Generado el ${fecha}</div>
+  </div>
+</div>
+
+<!-- ══ PÁG 1: DATOS DE LA EMPRESA ══ -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-num">01 / 04</div>
+    <div class="page-header-title">Identificación de la Empresa</div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-title">🏢 Tipo y Nombre</div>
+    <div class="row"><div class="row-key">Tipo de empresa</div><div class="row-val"><span class="badge-tipo">${tipoEmpresa}</span>${tipoEmpresa === 'SA' ? 'Sociedad Anónima' : tipoEmpresa === 'EIRL' ? 'Empresa Individual de Resp. Limitada' : tipoEmpresa === 'Ltda' ? 'Sociedad de Responsabilidad Limitada' : 'Sociedad por Acciones'}</div></div>
+    <div class="row"><div class="row-key">Nombre / Razón Social</div><div class="row-val"><strong>${v('razonSocial') || '—'}</strong></div></div>
+    <div class="row"><div class="row-key">Nombre Legal Completo</div><div class="row-val"><strong>${nombreEmpresa}</strong></div></div>
+    ${v('nombreFantasia') ? `<div class="row"><div class="row-key">Nombre de Fantasía</div><div class="row-val">${v('nombreFantasia')}</div></div>` : ''}
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-title">📋 Actividad Comercial</div>
+    <div class="row"><div class="row-key">Giro Principal</div><div class="row-val">${v('giro') || '—'}</div></div>
+    ${v('giro2') ? `<div class="row"><div class="row-key">Giro Secundario</div><div class="row-val">${v('giro2')}</div></div>` : ''}
+    <div class="row"><div class="row-key">Objeto Social</div><div class="row-val" style="line-height:1.6">${v('objeto') || '—'}</div></div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-title">💰 Capital Social</div>
+    <div class="row"><div class="row-key">Monto</div><div class="row-val"><strong style="font-size:13pt;color:#0A2342">$ ${capitalVal.toLocaleString('es-CL')}</strong> ${v('monedaCapital')}</div></div>
+    <div class="row"><div class="row-key">Moneda</div><div class="row-val">${v('monedaCapital') || 'CLP'}</div></div>
+  </div>
+
+  <div class="alert alert-gold">⚠️ <strong>Importante:</strong> El nombre de la empresa debe estar disponible. Verifícalo en <strong>empresaenundia.cl</strong> antes de iniciar el trámite oficial.</div>
+</div>
+
+<!-- ══ PÁG 2: SOCIOS Y DOMICILIO ══ -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-num">02 / 04</div>
+    <div class="page-header-title">Socios y Domicilio</div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-title">👥 ${tipoEmpresa === 'EIRL' ? 'Titular' : 'Socios y Representante Legal'}</div>
+    <table>
+      <thead><tr><th>Rol</th><th>Nombre Completo</th><th>RUT</th><th>Participación</th></tr></thead>
+      <tbody>${socioRows || '<tr><td colspan="4" style="color:#94A3B8;text-align:center">Sin socios registrados</td></tr>'}</tbody>
+    </table>
+  </div>
+
+  <div class="seccion" style="margin-top:28px">
+    <div class="seccion-title">📍 Domicilio Comercial</div>
+    <div class="row"><div class="row-key">Tipo de domicilio</div><div class="row-val">${v('tipoDomicilio') || '—'}</div></div>
+    <div class="row"><div class="row-key">Dirección</div><div class="row-val"><strong>${v('calle') || '—'}${v('depto') ? ', '+v('depto') : ''}</strong></div></div>
+    <div class="row"><div class="row-key">Ciudad / Comuna</div><div class="row-val">${v('ciudad') || '—'}</div></div>
+    <div class="row"><div class="row-key">Región</div><div class="row-val">${v('region') || '—'}</div></div>
+    ${v('codigoPostal') ? `<div class="row"><div class="row-key">Código Postal</div><div class="row-val">${v('codigoPostal')}</div></div>` : ''}
+  </div>
+
+  <div class="alert alert-blue">💡 <strong>Acreditación del domicilio:</strong> Tener a mano una boleta de servicios básicos (agua, luz, gas) con esta dirección. El SII puede solicitarla para verificar el domicilio comercial.</div>
+</div>
+
+<!-- ══ PÁG 3: DATOS SII ══ -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-num">03 / 04</div>
+    <div class="page-header-title">Datos Tributarios — SII</div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-title">🧾 Información para el SII</div>
+    <div class="row"><div class="row-key">Régimen tributario</div><div class="row-val"><strong>${v('regimen') || '—'}</strong></div></div>
+    <div class="row"><div class="row-key">Inicio de actividades</div><div class="row-val"><strong>${v('fechaInicio') || '—'}</strong></div></div>
+    <div class="row"><div class="row-key">Tipo de ventas</div><div class="row-val">${v('boletas') === 'si' ? 'Boletas a consumidores finales' : v('boletas') === 'no' ? 'Solo facturas a empresas' : 'Facturas y boletas (ambos)'}</div></div>
+    <div class="row"><div class="row-key">Trabajadores</div><div class="row-val">${v('trabajadores') || '—'}</div></div>
+  </div>
+
+  <div class="seccion">
+    <div class="seccion-title">👤 Representante Legal</div>
+    <div class="row"><div class="row-key">Nombre</div><div class="row-val"><strong>${v('repLegal') || '—'}</strong></div></div>
+    <div class="row"><div class="row-key">RUT</div><div class="row-val">${v('rutRep') || '—'}</div></div>
+    <div class="row"><div class="row-key">Email</div><div class="row-val">${v('emailContacto') || '—'}</div></div>
+    ${v('telefono') ? `<div class="row"><div class="row-key">Teléfono</div><div class="row-val">${v('telefono')}</div></div>` : ''}
+  </div>
+
+  <div class="alert alert-green">✅ <strong>Trámite en el SII:</strong> Con esta información completa el Formulario F3230 en <strong>sii.cl → Servicios Online → Inicio de Actividades</strong>. Luego activa la Facturación Electrónica MIPYME (gratis).</div>
+
+  <!-- FIRMA -->
+  <div style="margin-top:36px">
+    <div class="seccion-title">✍️ Firma del Solicitante</div>
+    <p style="font-size:10pt;color:#64748B;margin-bottom:20px">El abajo firmante declara que la información proporcionada en este formulario es verídica y completa.</p>
+    <div class="firma-grid">
+      <div class="firma-box">
+        <div class="firma-label">Firma del Representante Legal</div>
+        <div class="firma-linea"></div>
+        <div class="firma-name">${v('repLegal') || '_____________________'}</div>
+        <div class="firma-rut">${v('rutRep') || 'RUT: _______________'}</div>
+      </div>
+      <div class="firma-box">
+        <div class="firma-label">Fecha y Lugar</div>
+        <div class="firma-linea"></div>
+        <div class="firma-name">${v('ciudad') || '___________'}, ${fecha}</div>
+        <div class="firma-rut">&nbsp;</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PÁG 4: PRÓXIMOS PASOS ══ -->
+<div class="page">
+  <div class="page-header">
+    <div class="page-header-num">04 / 04</div>
+    <div class="page-header-title">Próximos Pasos</div>
+  </div>
+
+  <div class="alert alert-blue" style="margin-bottom:24px">📋 Sigue estos pasos en orden. Todo es online y gratuito (SpA/EIRL). Tiempo estimado total: <strong>menos de 2 horas</strong>.</div>
+
+  <div class="paso"><div class="paso-num">1</div><div class="paso-txt"><strong>Obtén tu Clave Única</strong> si aún no la tienes.<br>Regístrate en <a>claveunica.gob.cl</a> o en el Registro Civil con tu carnet.</div></div>
+  <div class="paso"><div class="paso-num">2</div><div class="paso-txt"><strong>Crea la empresa en Empresa en un Día</strong><br>Ingresa a <a>empresaenundia.cl</a> con tu Clave Única y completa el formulario con los datos de este documento.</div></div>
+  <div class="paso"><div class="paso-num">3</div><div class="paso-txt"><strong>Descarga el RUT de tu empresa</strong><br>Para SpA/EIRL se genera automáticamente al terminar. Para Ltda/SA debes presentar la escritura notarial en el SII (1-2 días).</div></div>
+  <div class="paso"><div class="paso-num">4</div><div class="paso-txt"><strong>Haz el Inicio de Actividades en el SII</strong><br>Ingresa a <a>sii.cl</a> → Servicios Online → Inicio de Actividades → Formulario F3230. Declara el giro y el régimen <strong>${v('regimen') || 'tributario elegido'}</strong>.</div></div>
+  <div class="paso"><div class="paso-num">5</div><div class="paso-txt"><strong>Activa la Facturación Electrónica MIPYME</strong><br>En <a>sii.cl</a> → Factura Electrónica → Autorización. Es gratis. Desde ese momento puedes emitir facturas y boletas.</div></div>
+  <div class="paso"><div class="paso-num">6</div><div class="paso-txt"><strong>Solicita la Patente Municipal</strong><br>Dirígete a la municipalidad de <strong>${v('ciudad') || 'tu ciudad'}</strong> con el RUT y el certificado de inicio de actividades del SII.</div></div>
+  <div class="paso"><div class="paso-num">7</div><div class="paso-txt"><strong>Abre cuenta bancaria empresarial</strong><br>Banco Estado, Santander, BCI u otro. Necesitarás el RUT y el inicio de actividades del SII.</div></div>
+  <div class="paso"><div class="paso-num">8</div><div class="paso-txt"><strong>Contrata un contador desde el primer mes</strong><br>Obligatorio declarar el F29 antes del día 20 de cada mes. Un contador PYME cuesta desde $80.000/mes.</div></div>
+
+  <div style="margin-top:32px;padding:20px 24px;background:#0A2342;border-radius:10px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap">
+    <div style="color:rgba(255,255,255,.5);font-size:9pt;text-align:center"><div style="color:#F4A522;font-weight:700;font-size:10pt;margin-bottom:3px">empresaenundia.cl</div>Crear empresa</div>
+    <div style="color:rgba(255,255,255,.5);font-size:9pt;text-align:center"><div style="color:#F4A522;font-weight:700;font-size:10pt;margin-bottom:3px">sii.cl</div>Impuestos y RUT</div>
+    <div style="color:rgba(255,255,255,.5);font-size:9pt;text-align:center"><div style="color:#F4A522;font-weight:700;font-size:10pt;margin-bottom:3px">claveunica.gob.cl</div>Clave Única</div>
+    <div style="color:rgba(255,255,255,.5);font-size:9pt;text-align:center"><div style="color:#F4A522;font-weight:700;font-size:10pt;margin-bottom:3px">dt.gob.cl</div>Direc. del Trabajo</div>
+  </div>
+
+  <p style="font-size:8pt;color:#94A3B8;margin-top:20px;text-align:center;line-height:1.6">Documento generado el ${fecha} · Guía informativa conforme a legislación chilena vigente · Ley 20.659 · Código de Comercio · Normativa SII 2026<br>Este formulario no tiene valor legal por sí solo. Completa el trámite oficial en empresaenundia.cl y sii.cl.</p>
+</div>
+
+</body></html>`;
+
+  // Abrir en nueva ventana e imprimir
+  const win = window.open('', '_blank', 'width=900,height=700');
+  win.document.write(html);
+  win.document.close();
+  win.onload = () => {
+    setTimeout(() => {
+      win.print();
+      btn.textContent = '📄 Descargar PDF';
+      btn.disabled = false;
+    }, 800);
+  };
+}
+
+// ── CLAVES ───────────────────────────────────────────────
+
+
+function init() {
+  renderProgress();
+  updateCapital();
+  var hoy = new Date().toISOString().split('T')[0];
+  var fi = document.getElementById('fechaInicio');
+  if (fi) fi.value = hoy;
+}
+init();
+</script>
+</body>
+</html>
