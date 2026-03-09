@@ -5,6 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Crear Empresa en Chile 2026</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK (compat v9) -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
 <style>
   :root {
     --azul:    #0A2342;
@@ -807,6 +811,8 @@
   .app-wrap.visible { display: block; }
 </style>
 
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 </head>
 <body>
 
@@ -1679,6 +1685,25 @@ function validateStep(step) {
     if (!r||!g||!o) ok=false;
   }
 
+  if (step === 3) {
+    // Al menos un socio
+    if (!socios.length) {
+      mostrarToast('⚠️ Debes agregar al menos un socio'); ok = false;
+    } else {
+      // Validar RUT de cada socio
+      let rutOk = true;
+      socios.forEach(s => {
+        if (!s.rut || s.rut.length < 8) rutOk = false;
+        if (!s.nombre || s.nombre.trim().length < 3) rutOk = false;
+      });
+      if (!rutOk) { mostrarToast('⚠️ Verifica nombre y RUT de todos los socios'); ok = false; }
+      // Validar que haya un representante legal si es SpA o Ltda
+      if ((tipoEmpresa === 'SpA' || tipoEmpresa === 'Ltda') && !socios.some(s => s.esRepresentante)) {
+        mostrarToast('⚠️ Debes designar un representante legal'); ok = false;
+      }
+    }
+  }
+
   if (step === 4) {
     const td = v('tipoDomicilio'); td ? hide('errDomicilio') : show('errDomicilio');
     const re = v('region');        re ? hide('errRegion')    : show('errRegion');
@@ -1691,10 +1716,13 @@ function validateStep(step) {
     const reg = v('regimen');      reg ? hide('errRegimen')  : show('errRegimen');
     const fi  = v('fechaInicio');  fi  ? hide('errFecha')    : show('errFecha');
     const rl  = v('repLegal');     rl  ? hide('errRepLegal') : show('errRepLegal');
-    const rr  = v('rutRep');       rr  ? hide('errRutRep')   : show('errRutRep');
+    const rr  = v('rutRep');
+    const rutValido = rr && rr.length >= 8 && rr.includes('-');
+    rutValido ? hide('errRutRep') : show('errRutRep');
+    if (!rutValido) ok = false;
     const em  = v('emailContacto');
     em && em.includes('@') ? hide('errEmail') : show('errEmail');
-    if (!reg||!fi||!rl||!rr||!em||!em.includes('@')) ok=false;
+    if (!reg||!fi||!rl||!em||!em.includes('@')) ok=false;
   }
 
   if (!ok) {
@@ -2233,6 +2261,150 @@ function init() {
   if (fi) fi.value = hoy;
 }
 init();
+
+// ── GUARDAR BORRADOR ─────────────────────────────────────
+const DRAFT_KEY = 'crear_empresa_borrador';
+
+// ── FIREBASE ─────────────────────────────────────────────
+const firebaseConfig = {
+  apiKey: "AIzaSyAuFUlu1DEDH9i8ArkXdZzghktpv0xb8k4",
+  authDomain: "crear-empresa-3d8ae.firebaseapp.com",
+  projectId: "crear-empresa-3d8ae",
+  storageBucket: "crear-empresa-3d8ae.firebasestorage.app",
+  messagingSenderId: "169308587278",
+  appId: "1:169308587278:web:8ca438c4e8a6fbbe14035f"
+};
+firebase.initializeApp(firebaseConfig);
+const fbdb = firebase.firestore();
+const FB_DOC = 'borradores/principal';
+
+function fbGuardar() {
+  try {
+    fbdb.doc(FB_DOC).set({ ...getBorrador(), updated: new Date().toISOString() })
+      .then(() => console.log('☁️ Guardado en Firebase'))
+      .catch(e => console.warn('⚠️ Firebase:', e));
+  } catch(e) {}
+}
+
+function fbCargar() {
+  fbdb.doc(FB_DOC).get()
+    .then(doc => {
+      if (doc.exists) {
+        const raw = localStorage.getItem(DRAFT_KEY);
+        const localDate = raw ? JSON.parse(raw).updated || '' : '';
+        const fbDate = doc.data().updated || '';
+        if (fbDate > localDate) {
+          localStorage.setItem(DRAFT_KEY, JSON.stringify(doc.data()));
+          console.log('☁️ Borrador Firebase más reciente, cargado');
+        }
+      }
+    }).catch(e => console.warn('⚠️ Firebase load:', e));
+}
+let _autoSaveTimer = null;
+
+function getBorrador() {
+  const fields = ['razonSocial','nombreFantasia','giro','giro2','objeto',
+    'capitalSlider','monedaCapital','tipoDomicilio','region','comuna','ciudad',
+    'calle','depto','codigoPostal','regimen','fechaInicio','boletas',
+    'trabajadores','repLegal','rutRep','emailContacto','telefono'];
+  const data = {};
+  fields.forEach(id => {
+    const el = document.getElementById(id);
+    if (el) data[id] = el.value;
+  });
+  data.tipoEmpresa = tipoEmpresa;
+  data.socios = socios;
+  data.capitalVal = capitalVal;
+  data.currentStep = currentStep;
+  return data;
+}
+
+function guardarBorrador(silent) {
+  try {
+    const bData = getBorrador();
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(bData));
+    fbGuardar();
+    if (!silent) mostrarToast('💾 Borrador guardado ☁️');
+  } catch(e) { console.warn('Error guardando borrador:', e); }
+}
+
+function cargarBorrador() {
+  try {
+    const raw = localStorage.getItem(DRAFT_KEY);
+    if (!raw) return false;
+    const data = JSON.parse(raw);
+    // Restore tipo empresa
+    if (data.tipoEmpresa) {
+      tipoEmpresa = data.tipoEmpresa;
+      document.querySelectorAll('.tipo-card').forEach(c => {
+        c.classList.toggle('selected', c.dataset.tipo === tipoEmpresa);
+      });
+    }
+    // Restore socios
+    if (data.socios && data.socios.length) { socios = data.socios; renderSocios(); }
+    // Restore capital
+    if (data.capitalVal) { capitalVal = data.capitalVal; }
+    // Restore fields
+    setTimeout(() => {
+      const fields = ['razonSocial','nombreFantasia','giro','giro2','objeto',
+        'capitalSlider','monedaCapital','tipoDomicilio','region','comuna','ciudad',
+        'calle','depto','codigoPostal','regimen','fechaInicio','boletas',
+        'trabajadores','repLegal','rutRep','emailContacto','telefono'];
+      fields.forEach(id => {
+        const el = document.getElementById(id);
+        if (el && data[id] !== undefined) el.value = data[id];
+      });
+      if (data.region) updateComunas();
+      updateCapitalExacto();
+      updateSocioUI();
+    }, 100);
+    return true;
+  } catch(e) { return false; }
+}
+
+function borrarBorrador() {
+  if (!confirm('¿Borrar el borrador guardado? Se perderán todos los datos.')) return;
+  localStorage.removeItem(DRAFT_KEY);
+  location.reload();
+}
+
+function autoGuardar() {
+  clearTimeout(_autoSaveTimer);
+  _autoSaveTimer = setTimeout(() => guardarBorrador(true), 2000);
+}
+
+function mostrarToast(msg) {
+  let t = document.getElementById('toast-borrador');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast-borrador';
+    t.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1e293b;color:#fff;padding:10px 18px;border-radius:10px;font-size:13px;z-index:9999;box-shadow:0 4px 20px rgba(0,0,0,.3);transition:opacity .3s';
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity = '1';
+  setTimeout(() => { t.style.opacity = '0'; }, 2500);
+}
+
+// Auto-save on input changes
+document.addEventListener('input', autoGuardar);
+fbCargar();
+document.addEventListener('change', autoGuardar);
+
+// Load draft on startup
+window.addEventListener('load', () => {
+  const hay = localStorage.getItem(DRAFT_KEY);
+  if (hay) {
+    const d = JSON.parse(hay);
+    if (d.tipoEmpresa || d.razonSocial) {
+      if (confirm('📋 Hay un borrador guardado. ¿Quieres continuar donde lo dejaste?')) {
+        cargarBorrador();
+        if (d.currentStep > 1) goStep(d.currentStep);
+      }
+    }
+  }
+});
+
 </script>
 </body>
 </html>
